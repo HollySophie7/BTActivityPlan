@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ division.get_name_display }} - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
+<li class="breadcrumb-item active">{{ division.get_name_display }}</li>
+{% endblock %}
+
+{% block page_title %}{{ division.get_name_display }}{% endblock %}
+
+{% block content %}
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Division Details</h6>
+        <div>
+            <a href="{% url 'division-update' division.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'division-delete' division.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Name:</strong></div>
+            <div class="col-sm-9">{{ division.get_name_display }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Leader:</strong></div>
+            <div class="col-sm-9">{{ division.leader|default:"Not assigned" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

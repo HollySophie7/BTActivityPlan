@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit Team Member{% else %}New Team Member{% endif %} - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'userprofile-list' %}">Team Members</a></li>
+<li class="breadcrumb-item active" aria-current="page">{% if object %}Edit{% else %}New{% endif %}</li>
+{% endblock %}
+
+{% block page_title %}{% if object %}Edit Team Member{% else %}Add Team Member{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card dashboard-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-{% if object %}pencil{% else %}person-plus{% endif %} me-2"></i>
+                    Team Member Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">
+                            {{ field.label }}
+                            {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors.0 }}</div>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <div class="text-muted small">{{ field.help_text }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'userprofile-list' %}" class="btn btn-secondary me-2">
+                            <i class="bi bi-arrow-left me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-1"></i>
+                            {% if object %}Update{% else %}Create{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}Team Members - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Team Members</li>
+{% endblock %}
+
+{% block page_title %}Team Management{% endblock %}
+
+{% block content %}
+<!-- Action Bar -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <a href="{% url 'userprofile-create' %}" class="btn btn-primary">
+            <i class="bi bi-person-plus me-2"></i>Add Team Member
+        </a>
+    </div>
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search team members..." 
+                   value="{{ request.GET.search }}">
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Team Grid -->
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="bi bi-people me-2"></i>Team Members
+            <span class="badge bg-secondary ms-2">{{ profiles|length }}</span>
+        </h6>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Export CSV</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-file-pdf me-2"></i>Export PDF</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Availability</th>
+                        <th>Projects</th>
+                        <th>Specialization</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in profiles %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-person-circle text-primary me-2" style="font-size: 2rem;"></i>
+                                <div>
+                                    <div class="fw-bold">
+                                        <a href="{% url 'userprofile-detail' profile.pk %}" class="text-decoration-none">
+                                            {{ profile.user.get_full_name|default:profile.user.username }}
+                                        </a>
+                                    </div>
+                                    <div class="text-muted small">{{ profile.user.email|default:"No email" }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">{{ profile.get_role_display }}</span>
+                        </td>
+                        <td>
+                            <span class="badge 
+                                {% if profile.availability_status == 'available' %}bg-success
+                                {% elif profile.availability_status == 'busy' %}bg-warning
+                                {% elif profile.availability_status == 'overloaded' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ profile.availability_status|title }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info">{{ profile.current_projects_count|default:0 }}</span>
+                        </td>
+                        <td>{{ profile.specialization|default:"Not specified" }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'userprofile-detail' profile.pk %}" class="btn btn-sm btn-outline-info" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'userprofile-update' profile.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'userprofile-delete' profile.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-person-x display-6"></i>
+                                <p class="mt-2">No team members found</p>
+                                <a href="{% url 'userprofile-create' %}" class="btn btn-primary">
+                                    <i class="bi bi-person-plus me-2"></i>Add First Team Member
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+        {% endif %}
+        
+        <li class="page-item active">
+            <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+        
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

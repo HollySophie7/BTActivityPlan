@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Progress Entry Details{% endblock %}
+{% block content %}
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Progress Entry</h6>
+        <div>
+            <a href="{% url 'projectprogress-update' progress.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'projectprogress-delete' progress.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Project:</strong></div>
+            <div class="col-sm-9">{{ progress.project.project_name }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Month:</strong></div>
+            <div class="col-sm-9">{{ progress.month }} {{ progress.year }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Status:</strong></div>
+            <div class="col-sm-9"><span class="badge bg-secondary">{{ progress.get_status_display }}</span></div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Notes:</strong></div>
+            <div class="col-sm-9">{{ progress.notes|default:"No notes"|linebreaksbr }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Created:</strong></div>
+            <div class="col-sm-9">{{ progress.created_at|date:"F d, Y H:i" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

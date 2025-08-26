@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Projects</li>
+{% endblock %}
+
+{% block page_title %}Project Management{% endblock %}
+
+{% block content %}
+<!-- Action Bar -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <a href="{% url 'project-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>New Project
+        </a>
+    </div>
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search projects..." 
+                   value="{{ request.GET.search }}">
+            <select name="status" class="form-select me-2">
+                <option value="">All Status</option>
+                <option value="incoming" {% if request.GET.status == 'incoming' %}selected{% endif %}>Incoming</option>
+                <option value="in progress" {% if request.GET.status == 'in progress' %}selected{% endif %}>In Progress</option>
+                <option value="outgoing" {% if request.GET.status == 'outgoing' %}selected{% endif %}>Outgoing</option>
+                <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+                <option value="delayed" {% if request.GET.status == 'delayed' %}selected{% endif %}>Delayed</option>
+            </select>
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Projects Grid -->
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="bi bi-kanban me-2"></i>All Projects
+            <span class="badge bg-secondary ms-2">{{ projects|length }}</span>
+        </h6>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Export CSV</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-file-pdf me-2"></i>Export PDF</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Project</th>
+                        <th>Status</th>
+                        <th>Progress</th>
+                        <th>Timeline</th>
+                        <th>Team</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="status-indicator me-3" 
+                                     style="width: 12px; height: 12px; border-radius: 50%; 
+                                            background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'brown' %}#795548{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
+                                <div>
+                                    <div class="fw-bold">
+                                        <a href="{% url 'project-detail' project.pk %}" class="text-decoration-none">
+                                            {{ project.project_name }}
+                                        </a>
+                                    </div>
+                                    <div class="text-muted small">{{ project.beneficiary_division|default:"No division" }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge 
+                                {% if project.status == 'completed' %}bg-success
+                                {% elif project.status == 'in progress' %}bg-primary
+                                {% elif project.status == 'incoming' %}bg-info
+                                {% elif project.status == 'delayed' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ project.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="progress me-2" style="width: 80px; height: 8px;">
+                                    <div class="progress-bar 
+                                        {% if project.progress >= 75 %}bg-success
+                                        {% elif project.progress >= 50 %}bg-info
+                                        {% elif project.progress >= 25 %}bg-warning
+                                        {% else %}bg-danger{% endif %}" 
+                                        style="width: {{ project.progress }}%"></div>
+                                </div>
+                                <span class="small fw-bold">{{ project.progress }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small">
+                                <div><strong>Start:</strong> {{ project.start_date|date:"M d, Y" }}</div>
+                                <div><strong>End:</strong> {{ project.end_date|date:"M d, Y" }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small">
+                                <div><strong>Dev:</strong> {{ project.developer|default:"Unassigned" }}</div>
+                                <div><strong>SA:</strong> {{ project.system_analyst|default:"Unassigned" }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'project-detail' project.pk %}" class="btn btn-sm btn-outline-info" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'project-update' project.pk %}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'project-delete' project.pk %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-inbox display-6"></i>
+                                <p class="mt-2">No projects found</p>
+                                <a href="{% url 'project-create' %}" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-2"></i>Create First Project
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+        {% endif %}
+        
+        <li class="page-item active">
+            <span class="page-link">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+        </li>
+        
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

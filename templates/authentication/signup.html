@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Project Tracker</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem 0;
+        }
+        
+        .signup-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 4rem);
+        }
+        
+        .signup-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .signup-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .signup-body {
+            padding: 2rem;
+        }
+        
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .brand-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-signup {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .password-help {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <!-- Header -->
+            <div class="signup-header">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban"></i>
+                    ProjectTracker
+                </div>
+                <p class="brand-subtitle">Create your account to get started</p>
+            </div>
+            
+            <!-- Body -->
+            <div class="signup-body">
+                <!-- Display Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- Display Form Errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                            <i class="bi bi-person me-1"></i>Username *
+                        </label>
+                        <input type="text" 
+                               class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                               id="{{ form.username.id_for_label }}"
+                               name="{{ form.username.name }}"
+                               value="{{ form.username.value|default:'' }}"
+                               placeholder="Choose a username"
+                               required>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">{{ form.username.errors.0 }}</div>
+                        {% else %}
+                            <div class="password-help">
+                                Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.password1.id_for_label }}" class="form-label">
+                            <i class="bi bi-lock me-1"></i>Password *
+                        </label>
+                        <input type="password" 
+                               class="form-control {% if form.password1.errors %}is-invalid{% endif %}" 
+                               id="{{ form.password1.id_for_label }}"
+                               name="{{ form.password1.name }}"
+                               placeholder="Create a strong password"
+                               required>
+                        {% if form.password1.errors %}
+                            <div class="invalid-feedback">{{ form.password1.errors.0 }}</div>
+                        {% else %}
+                            <div class="password-help">
+                                Your password must contain at least 8 characters and can't be too common.
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.password2.id_for_label }}" class="form-label">
+                            <i class="bi bi-lock-fill me-1"></i>Confirm Password *
+                        </label>
+                        <input type="password" 
+                               class="form-control {% if form.password2.errors %}is-invalid{% endif %}" 
+                               id="{{ form.password2.id_for_label }}"
+                               name="{{ form.password2.name }}"
+                               placeholder="Confirm your password"
+                               required>
+                        {% if form.password2.errors %}
+                            <div class="invalid-feedback">{{ form.password2.errors.0 }}</div>
+                        {% else %}
+                            <div class="password-help">
+                                Enter the same password as before, for verification.
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-signup">
+                        <i class="bi bi-person-plus me-2"></i>Create Account
+                    </button>
+                </form>
+                
+                <div class="login-link">
+                    <p class="text-muted">Already have an account? 
+                        <a href="{% url 'login' %}" class="text-decoration-none">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

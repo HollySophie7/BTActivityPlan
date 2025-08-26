@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Profile</li>
+{% endblock %}
+
+{% block page_title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card dashboard-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-person-circle display-1 text-primary"></i>
+                </div>
+                <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+                <p class="text-muted">{{ profile.get_role_display }}</p>
+                <span class="badge 
+                    {% if profile.availability_status == 'available' %}bg-success
+                    {% elif profile.availability_status == 'busy' %}bg-warning
+                    {% elif profile.availability_status == 'overloaded' %}bg-danger
+                    {% else %}bg-secondary{% endif %}">
+                    {{ profile.get_availability_status_display|default:profile.availability_status|title }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card dashboard-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-person-gear me-2"></i>Profile Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Username:</strong></div>
+                    <div class="col-sm-9">{{ user.username }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Email:</strong></div>
+                    <div class="col-sm-9">{{ user.email|default:"Not provided" }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Role:</strong></div>
+                    <div class="col-sm-9">{{ profile.get_role_display }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Availability:</strong></div>
+                    <div class="col-sm-9">
+                        <span class="badge 
+                            {% if profile.availability_status == 'available' %}bg-success
+                            {% elif profile.availability_status == 'busy' %}bg-warning
+                            {% elif profile.availability_status == 'overloaded' %}bg-danger
+                            {% else %}bg-secondary{% endif %}">
+                            {{ profile.get_availability_status_display|default:profile.availability_status|title }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Current Projects:</strong></div>
+                    <div class="col-sm-9">{{ profile.current_projects_count|default:0 }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Specialization:</strong></div>
+                    <div class="col-sm-9">{{ profile.specialization|default:"Not specified" }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Reports To:</strong></div>
+                    <div class="col-sm-9">{{ profile.responsible_person|default:"Not assigned" }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Join Date:</strong></div>
+                    <div class="col-sm-9">{{ user.date_joined|date:"F d, Y" }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Last Login:</strong></div>
+                    <div class="col-sm-9">{{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</div>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'userprofile-update' profile.user.pk %}" class="btn btn-primary">
+                        <i class="bi bi-pencil me-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

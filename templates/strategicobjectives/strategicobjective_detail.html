@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ objective.strategic_objective|truncatechars:30 }}{% endblock %}
+{% block page_title %}Strategic Objective Details{% endblock %}
+{% block content %}
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Strategic Objective</h6>
+        <div>
+            <a href="{% url 'strategicobjective-update' objective.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'strategicobjective-delete' objective.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Objective:</strong></div>
+            <div class="col-sm-9">{{ objective.strategic_objective|linebreaksbr }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Perspective:</strong></div>
+            <div class="col-sm-9">{{ objective.perspective|default:"Not assigned" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Responsible Person:</strong></div>
+            <div class="col-sm-9">{{ objective.responsible_person|default:"Not assigned" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Start Date:</strong></div>
+            <div class="col-sm-9">{{ objective.start_date|date:"F d, Y"|default:"Not set" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>End Date:</strong></div>
+            <div class="col-sm-9">{{ objective.end_date|date:"F d, Y"|default:"Not set" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

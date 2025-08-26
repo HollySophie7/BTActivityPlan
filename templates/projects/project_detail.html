@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.project_name }} - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'project-list' %}">Projects</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ project.project_name|truncatechars:30 }}</li>
+{% endblock %}
+
+{% block page_title %}{{ project.project_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card dashboard-card mb-4">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-info-circle me-2"></i>Project Details
+                </h6>
+                <div>
+                    <a href="{% url 'project-update' project.pk %}" class="btn btn-sm btn-warning">
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </a>
+                    <a href="{% url 'project-delete' project.pk %}" class="btn btn-sm btn-danger ms-1">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Status:</strong></div>
+                    <div class="col-sm-9">
+                        <span class="badge 
+                            {% if project.status == 'completed' %}bg-success
+                            {% elif project.status == 'in progress' %}bg-primary
+                            {% elif project.status == 'incoming' %}bg-info
+                            {% elif project.status == 'delayed' %}bg-danger
+                            {% else %}bg-secondary{% endif %}">
+                            {{ project.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Color Status:</strong></div>
+                    <div class="col-sm-9">
+                        <span class="badge" style="background-color: 
+                            {% if project.color_status == 'green' %}#198754
+                            {% elif project.color_status == 'amber' %}#ffc107
+                            {% elif project.color_status == 'brown' %}#795548
+                            {% elif project.color_status == 'red' %}#dc3545
+                            {% else %}#6c757d{% endif %};">
+                            {{ project.get_color_status_display }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Progress:</strong></div>
+                    <div class="col-sm-9">
+                        <div class="d-flex align-items-center">
+                            <div class="progress me-3" style="width: 200px; height: 20px;">
+                                <div class="progress-bar" style="width: {{ project.progress }}%">{{ project.progress }}%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Timeline:</strong></div>
+                    <div class="col-sm-9">
+                        <strong>Start:</strong> {{ project.start_date|date:"F d, Y" }}<br>
+                        <strong>End:</strong> {{ project.end_date|date:"F d, Y" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Team:</strong></div>
+                    <div class="col-sm-9">
+                        <strong>Developer:</strong> {{ project.developer|default:"Not assigned" }}<br>
+                        <strong>System Analyst:</strong> {{ project.system_analyst|default:"Not assigned" }}<br>
+                        <strong>Responsible Person:</strong> {{ project.responsible_person|default:"Not assigned" }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Division:</strong></div>
+                    <div class="col-sm-9">{{ project.beneficiary_division|default:"Not specified" }}</div>
+                </div>
+
+                {% if project.comments %}
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Comments:</strong></div>
+                    <div class="col-sm-9">{{ project.comments|linebreaksbr }}</div>
+                </div>
+                {% endif %}
+
+                {% if project.performance_measure %}
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Performance Measure:</strong></div>
+                    <div class="col-sm-9">{{ project.performance_measure|linebreaksbr }}</div>
+                </div>
+                {% endif %}
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Created:</strong></div>
+                    <div class="col-sm-9">{{ project.created_at|date:"F d, Y H:i" }}</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Last Updated:</strong></div>
+                    <div class="col-sm-9">{{ project.updated_at|date:"F d, Y H:i" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card dashboard-card mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-bullseye me-2"></i>Strategic Alignment
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Yearly Plan:</strong><br>
+                    {{ project.yearly_plan|default:"Not assigned" }}
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Strategic Objective:</strong><br>
+                    {{ project.strategic_objective|default:"Not assigned" }}
+                </div>
+                
+                <div class="mb-3">
+                    <strong>Strategic Initiative:</strong><br>
+                    {{ project.strategic_initiatives_or_activities|default:"Not assigned" }}
+                </div>
+            </div>
+        </div>
+
+        <div class="card dashboard-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-clock-history me-2"></i>Quick Actions
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'projectprogress-create' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-plus-circle me-1"></i>Add Progress Entry
+                    </a>
+                    <a href="{% url 'project-list' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Projects
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

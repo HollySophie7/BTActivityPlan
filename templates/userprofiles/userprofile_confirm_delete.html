@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Team Member - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'userprofile-list' %}">Team Members</a></li>
+<li class="breadcrumb-item"><a href="{% url 'userprofile-detail' object.pk %}">{{ object.user.username }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Delete</li>
+{% endblock %}
+
+{% block page_title %}Delete Team Member{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card dashboard-card">
+            <div class="card-header py-3 bg-danger text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                
+                <p>Are you sure you want to delete the following team member?</p>
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ object.user.get_full_name|default:object.user.username }}</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <small class="text-muted">Username:</small><br>
+                                {{ object.user.username }}
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted">Role:</small><br>
+                                <span class="badge bg-primary">{{ object.get_role_display }}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <small class="text-muted">Email:</small><br>
+                                {{ object.user.email|default:"Not provided" }}
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted">Projects:</small><br>
+                                {{ object.current_projects_count|default:0 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'userprofile-detail' object.pk %}" class="btn btn-secondary me-2">
+                            <i class="bi bi-arrow-left me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Delete Team Member
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

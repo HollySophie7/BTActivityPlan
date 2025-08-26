@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Project - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'project-list' %}">Projects</a></li>
+<li class="breadcrumb-item"><a href="{% url 'project-detail' object.pk %}">{{ object.project_name|truncatechars:20 }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Delete</li>
+{% endblock %}
+
+{% block page_title %}Delete Project{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card dashboard-card">
+            <div class="card-header py-3 bg-danger text-white">
+                <h6 class="m-0 font-weight-bold">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                
+                <p>Are you sure you want to delete the following project?</p>
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ object.project_name }}</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <small class="text-muted">Status:</small><br>
+                                <span class="badge bg-secondary">{{ object.get_status_display }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted">Progress:</small><br>
+                                <strong>{{ object.progress }}%</strong>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <small class="text-muted">Developer:</small><br>
+                                {{ object.developer|default:"Not assigned" }}
+                            </div>
+                            <div class="col-sm-6">
+                                <small class="text-muted">End Date:</small><br>
+                                {{ object.end_date|date:"M d, Y" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'project-detail' object.pk %}" class="btn btn-secondary me-2">
+                            <i class="bi bi-arrow-left me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i>Delete Project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

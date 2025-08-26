@@ -1,0 +1,11 @@
+{% extends 'generic_form.html' %}
+
+{% block title %}{% if object %}Edit Division{% else %}New Division{% endif %} - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
+<li class="breadcrumb-item active">{% if object %}Edit{% else %}New{% endif %}</li>
+{% endblock %}
+
+{% block page_title %}{% if object %}Edit Division{% else %}Create Division{% endif %}{% endblock %}

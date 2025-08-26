@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+{% endblock %}
+
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+<!-- Quick Stats Cards -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="card-icon status-green me-3">
+                        <i class="bi bi-kanban"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Projects
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_projects|default:0 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="card-icon status-amber me-3">
+                        <i class="bi bi-play-circle"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Active Projects
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ active_projects|default:0 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="card-icon status-green me-3">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Completed
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ completed_projects|default:0 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card dashboard-card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="card-icon status-red me-3">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Overdue
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ overdue_projects|default:0 }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Project Status Chart -->
+<div class="row mb-4">
+    <div class="col-xl-8 col-lg-7">
+        <div class="card dashboard-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Project Status Overview</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="projectStatusChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-4 col-lg-5">
+        <div class="card dashboard-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Team Workload</h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-sm">Available</span>
+                        <span class="text-sm font-weight-bold">{{ available_team|default:0 }}</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" style="width: 60%"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-sm">Busy</span>
+                        <span class="text-sm font-weight-bold">{{ busy_team|default:0 }}</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-warning" style="width: 30%"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-sm">Overloaded</span>
+                        <span class="text-sm font-weight-bold">{{ overloaded_team|default:0 }}</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-danger" style="width: 10%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Projects Table -->
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Recent Projects</h6>
+        <a href="#" class="btn btn-sm btn-primary">View All</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Status</th>
+                        <th>Progress</th>
+                        <th>Due Date</th>
+                        <th>Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in recent_projects %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-2" style="width: 8px; height: 8px; border-radius: 50%; background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
+                                <div>
+                                    <div class="fw-bold">{{ project.project_name }}</div>
+                                    <div class="text-muted small">{{ project.beneficiary_division }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">{{ project.get_status_display }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="progress me-2" style="width: 100px; height: 8px;">
+                                    <div class="progress-bar" style="width: {{ project.progress }}%"></div>
+                                </div>
+                                <span class="small">{{ project.progress }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="small">{{ project.end_date|date:"M d, Y" }}</span>
+                        </td>
+                        <td>
+                            <span class="small">{{ project.developer|default:"Unassigned" }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No projects found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Project Status Chart
+const ctx = document.getElementById('projectStatusChart').getContext('2d');
+const projectStatusChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Green', 'Amber', 'Brown', 'Red', 'Not Started'],
+        datasets: [{
+            data: [15, 8, 3, 2, 5],
+            backgroundColor: ['#198754', '#ffc107', '#795548', '#dc3545', '#6c757d'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    usePointStyle: true
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
