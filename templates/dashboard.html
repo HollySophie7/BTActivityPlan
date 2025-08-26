@@ -11,73 +11,89 @@
 
 {% block content %}
 <!-- Quick Stats Cards -->
-<div class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="card-icon status-green me-3">
-                        <i class="bi bi-kanban"></i>
-                    </div>
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card dashboard-card h-100 border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Projects
+                        <div class="text-muted small fw-medium mb-1">Clicks</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ total_projects|default:"15,352" }}</div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-success small fw-medium">3.02%</span>
+                            <span class="text-muted small ms-1">From last month</span>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_projects|default:0 }}</div>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 48px; height: 48px; background-color: #e3f2fd;">
+                        <i class="bi bi-hand-index text-primary" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="card-icon status-amber me-3">
-                        <i class="bi bi-play-circle"></i>
-                    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card dashboard-card h-100 border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Active Projects
+                        <div class="text-muted small fw-medium mb-1">Sales</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ active_projects|default:"8,764" }}</div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-down text-danger me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-danger small fw-medium">1.15%</span>
+                            <span class="text-muted small ms-1">From last month</span>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ active_projects|default:0 }}</div>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 48px; height: 48px; background-color: #e8f5e8;">
+                        <i class="bi bi-bag text-success" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="card-icon status-green me-3">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card dashboard-card h-100 border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Completed
+                        <div class="text-muted small fw-medium mb-1">Events</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ completed_projects|default:"5,123" }}</div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-success small fw-medium">4.78%</span>
+                            <span class="text-muted small ms-1">From last month</span>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ completed_projects|default:0 }}</div>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 48px; height: 48px; background-color: #fff3e0;">
+                        <i class="bi bi-calendar-event text-warning" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card dashboard-card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="card-icon status-red me-3">
-                        <i class="bi bi-exclamation-triangle"></i>
-                    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card dashboard-card h-100 border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Overdue
+                        <div class="text-muted small fw-medium mb-1">Users</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ overdue_projects|default:"12,945" }}</div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-success small fw-medium">2.35%</span>
+                            <span class="text-muted small ms-1">From last month</span>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ overdue_projects|default:0 }}</div>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                         style="width: 48px; height: 48px; background-color: #f3e5f5;">
+                        <i class="bi bi-people text-info" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
             </div>
@@ -85,52 +101,103 @@
     </div>
 </div>
 
-<!-- Project Status Chart -->
-<div class="row mb-4">
-    <div class="col-xl-8 col-lg-7">
-        <div class="card dashboard-card">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Project Status Overview</h6>
+<!-- Main Charts Section -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-8">
+        <div class="card dashboard-card border-0">
+            <div class="card-header bg-white border-0 py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-semibold text-dark">Top Pages</h6>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary active">ALL</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">1M</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">6M</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">1Y</button>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <canvas id="projectStatusChart" width="400" height="200"></canvas>
+            <div class="card-body p-4">
+                <canvas id="topPagesChart" style="height: 300px;"></canvas>
             </div>
         </div>
     </div>
     
-    <div class="col-xl-4 col-lg-5">
-        <div class="card dashboard-card">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Team Workload</h6>
+    <div class="col-xl-4">
+        <div class="card dashboard-card border-0">
+            <div class="card-header bg-white border-0 py-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-semibold text-dark">Sessions by Country</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            View Data
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Export</a></li>
+                            <li><a class="dropdown-item" href="#">View Details</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
+                <!-- Country List -->
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="text-sm">Available</span>
-                        <span class="text-sm font-weight-bold">{{ available_team|default:0 }}</span>
-                    </div>
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-success" style="width: 60%"></div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KPHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4K" 
+                                 alt="US Flag" class="me-2" style="width: 20px; height: 20px; border-radius: 3px;">
+                            <span class="small fw-medium">United States</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="small fw-semibold text-dark">659k</div>
+                            <div class="progress mt-1" style="width: 80px; height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 65%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="text-sm">Busy</span>
-                        <span class="text-sm font-weight-bold">{{ busy_team|default:0 }}</span>
-                    </div>
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-warning" style="width: 30%"></div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center">
+                            <div class="me-2" style="width: 20px; height: 20px; background: #dc2626; border-radius: 3px;"></div>
+                            <span class="small fw-medium">Russia</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="small fw-semibold text-dark">485k</div>
+                            <div class="progress mt-1" style="width: 80px; height: 4px;">
+                                <div class="progress-bar bg-danger" style="width: 50%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="text-sm">Overloaded</span>
-                        <span class="text-sm font-weight-bold">{{ overloaded_team|default:0 }}</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center">
+                            <div class="me-2" style="width: 20px; height: 20px; background: #f59e0b; border-radius: 3px;"></div>
+                            <span class="small fw-medium">China</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="small fw-semibold text-dark">355k</div>
+                            <div class="progress mt-1" style="width: 80px; height: 4px;">
+                                <div class="progress-bar bg-warning" style="width: 35%"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="progress" style="height: 8px;">
-                        <div class="progress-bar bg-danger" style="width: 10%"></div>
+                </div>
+
+                <div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex align-items-center">
+                            <div class="me-2" style="width: 20px; height: 20px; background: #10b981; border-radius: 3px;"></div>
+                            <span class="small fw-medium">Canada</span>
+                        </div>
+                        <div class="text-end">
+                            <div class="small fw-semibold text-dark">204k</div>
+                            <div class="progress mt-1" style="width: 80px; height: 4px;">
+                                <div class="progress-bar bg-success" style="width: 20%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,32 +267,99 @@
 
 {% block extra_js %}
 <script>
-// Project Status Chart
-const ctx = document.getElementById('projectStatusChart').getContext('2d');
-const projectStatusChart = new Chart(ctx, {
-    type: 'doughnut',
+// Top Pages Chart (matching the image design)
+const ctx = document.getElementById('topPagesChart').getContext('2d');
+const topPagesChart = new Chart(ctx, {
+    type: 'bar',
     data: {
-        labels: ['Green', 'Amber', 'Brown', 'Red', 'Not Started'],
-        datasets: [{
-            data: [15, 8, 3, 2, 5],
-            backgroundColor: ['#198754', '#ffc107', '#795548', '#dc3545', '#6c757d'],
-            borderWidth: 2,
-            borderColor: '#ffffff'
-        }]
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+            {
+                label: 'Page Views',
+                data: [32, 65, 45, 68, 49, 60, 40, 43, 78, 52, 62, 65],
+                backgroundColor: '#3b82f6',
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.8
+            },
+            {
+                label: 'Clicks',
+                data: [12, 25, 22, 30, 28, 35, 25, 28, 45, 32, 38, 40],
+                backgroundColor: '#10b981',
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.8
+            },
+            {
+                label: 'Conversion Rate',
+                type: 'line',
+                data: [10, 15, 12, 18, 16, 20, 15, 18, 25, 20, 23, 25],
+                borderColor: '#f59e0b',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                pointBackgroundColor: '#f59e0b',
+                pointRadius: 4,
+                yAxisID: 'y1'
+            }
+        ]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
         plugins: {
             legend: {
+                display: true,
                 position: 'bottom',
                 labels: {
+                    usePointStyle: true,
                     padding: 20,
-                    usePointStyle: true
+                    font: {
+                        size: 12
+                    }
                 }
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: '#64748b'
+                }
+            },
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                grid: {
+                    color: '#f1f5f9'
+                },
+                ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: '#64748b'
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: false,
+                position: 'right'
             }
         }
     }
 });
+
+// Add some modern styling and animations
+Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+Chart.defaults.color = '#64748b';
 </script>
 {% endblock %}
