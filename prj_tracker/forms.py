@@ -1,20 +1,32 @@
 from django.forms import ModelForm
 from .models import *
+from django import forms
 
 class YearlyPlanForm(ModelForm):
     class Meta:
         model = YearlyPlan
         fields = ['name', 'description', 'weightage', 'division']
+        widgets = {
+            'division': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['division'].queryset = Division.objects.all()
 
 class DivisionForm(ModelForm):
     class Meta:
         model = Division
         fields = ['name', 'leader']
 
+        widgets = {
+            'name': forms.Select(attrs={'class': 'form-control'})
+        }
+
 class PerspectiveForm(ModelForm):
     class Meta:
         model = Perspective
-        fields = ['name', 'description']
+        fields = ['name', 'yearly_plan']
 
 class StrategicObjectiveForm(ModelForm):
     class Meta:
@@ -33,8 +45,17 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = [
-            'project_name', 'developer', 'system_analyst', 'start_date', 'end_date',
-            'progress', 'status', 'responsible_person', 'comments', 'beneficiary_division',
-            'strategic_objective', 'strategic_initiatives_or_activities', 'yearly_plan',
-            'performance_measure', 'color_status'
+            "project_name", "developer", "system_analyst", "start_date", "end_date", "status", "strategic_initiative", "beneficiary_division_section"
         ]
+
+
+class BeneficiaryDivisionSectionForm(ModelForm):
+    class Meta:
+        model = BeneficiaryDivisionSection
+        fields = ['name']
+
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['role', 'availability_status', 'specialization']

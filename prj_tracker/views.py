@@ -11,6 +11,8 @@ from .models import (
     Perspective, StrategicInitiative, ProjectProgress, AuditLog
 )
 
+from .forms import *
+
 def dashboard(request):
     if request.user.is_authenticated:
         # Basic project statistics
@@ -26,11 +28,11 @@ def dashboard(request):
         ).count()
         
         # Project status color distribution
-        green_projects = Project.objects.filter(color_status='green').count()
-        amber_projects = Project.objects.filter(color_status='amber').count()
-        brown_projects = Project.objects.filter(color_status='brown').count()
-        red_projects = Project.objects.filter(color_status='red').count()
-        not_started_projects = Project.objects.filter(color_status='not_started').count()
+        green_projects = Project.objects.filter().count()
+        amber_projects = Project.objects.filter().count()
+        brown_projects = Project.objects.filter().count()
+        red_projects = Project.objects.filter().count()
+        not_started_projects = Project.objects.filter().count()
         
         # Team workload statistics
         total_team = UserProfile.objects.count()
@@ -57,6 +59,7 @@ def dashboard(request):
             status__in=['incoming', 'in progress']
         ).order_by('end_date')[:5]
         
+        print(upcoming_deadlines)
         # Add days remaining for each deadline
         for project in upcoming_deadlines:
             project.days_remaining = (project.end_date - today).days
@@ -71,7 +74,7 @@ def dashboard(request):
         strategic_objectives = StrategicObjective.objects.all()[:6]
         for objective in strategic_objectives:
             # Calculate completion percentage based on associated projects
-            objective_projects = Project.objects.filter(strategic_objective=objective)
+            objective_projects = Project.objects.filter(strategic_objective_name=objective)
             if objective_projects.exists():
                 total_progress = sum(float(p.progress) for p in objective_projects)
                 objective.completion_percentage = total_progress / objective_projects.count()
@@ -139,10 +142,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = 'projects/project_form.html'
     fields = [
-        'project_name', 'developer', 'system_analyst', 'start_date', 'end_date',
-        'progress', 'status', 'responsible_person', 'comments', 'beneficiary_division',
-        'strategic_objective', 'strategic_initiatives_or_activities', 'yearly_plan',
-        'performance_measure', 'color_status'
+        'project_name', 'developer', 'system_analyst', 'start_date', 'end_date', 'status',  'beneficiary_division_section', 'strategic_initiative',
     ]
     success_url = reverse_lazy('project-list')
     
@@ -195,7 +195,12 @@ class UserProfileCreateView(LoginRequiredMixin, CreateView):
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = UserProfile
     template_name = 'userprofiles/userprofile_form.html'
-    fields = ['role', 'availability_status', 'responsible_person', 'current_projects_count', 'specialization']
+    form_class = UserProfileForm
+
+    def form_valid(self, form):
+        messages.success(self.request, 'User profile updated successfully!')
+        return super().form_valid(form)
+
     success_url = reverse_lazy('userprofile-list')
 
 class UserProfileDeleteView(LoginRequiredMixin, DeleteView):
