@@ -50,12 +50,24 @@ class Division(models.Model):
     leader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     def __str__(self):
         return self.name
+
+    def get_name_display(self):
+        return self.name
+    
+    def get_leader(self):
+        return self.leader
     
 class BeneficiaryDivisionSection(models.Model):
     name = models.CharField(max_length=100, unique=True)
     division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name='beneficiary_division_sections')
     def __str__(self):
         return self.name
+
+    def get_name_display(self):
+        return self.name
+    
+    def get_leader(self):
+        return self.division.leader
 
     
 class YearlyPlan(models.Model):
@@ -130,9 +142,9 @@ class ProjectComment(models.Model):
     ]
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
     comment = models.TextField()
+    status = models.CharField(max_length=20, choices=status_choices, default='open')   
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=20, choices=status_choices, default='open')   
 
 
 class WeeklyProjectUpdate(models.Model):

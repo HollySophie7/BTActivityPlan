@@ -19,12 +19,18 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="bi bi-list"></i>
-            </button>
-            <a href="{% url 'dashboard' %}" class="sidebar-brand">
-                ProjectTracker
-            </a>
+            <div class="cente-logo">
+                <img src="{% static 'images/logo.png' %}" alt="Cente logo">
+            </div>
+            <div class="cente-text">
+                <a href="{% url 'dashboard' %}" class="sidebar-brand">
+                    Project Tracker
+                </a> 
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            
         </div>
         
         <div class="sidebar-nav">
@@ -39,7 +45,7 @@
             <!-- Project Management Section -->
             <div class="nav-section-divider"></div>
             <div class="nav-section-header">
-                <span class="nav-text">PROJECT MANAGEMENT</span>
+                <span class="nav-text"> - PROJECT MANAGEMENT</span>
             </div>
             <div class="nav-item">
                 <a href="{% url 'project-list' %}" class="nav-link {% if 'project' in request.resolver_match.url_name and 'projectprogress' not in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects">
@@ -47,12 +53,12 @@
                     <span class="nav-text">Projects</span>
                 </a>
             </div>
-            <div class="nav-item">
+            <!-- <div class="nav-item">
                 <a href="{% url 'projectprogress-list' %}" class="nav-link {% if 'projectprogress' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Progress Tracking">
                     <i class="bi bi-graph-up"></i>
                     <span class="nav-text">Progress Tracking</span>
                 </a>
-            </div>
+            </div> -->
             <div class="nav-item">
                 <a href="#" class="nav-link" data-tooltip="Project Comments">
                     <i class="bi bi-chat-left-text"></i>
@@ -69,7 +75,7 @@
             <!-- Team Management Section -->
             <div class="nav-section-divider"></div>
             <div class="nav-section-header">
-                <span class="nav-text">TEAM MANAGEMENT</span>
+                <span class="nav-text">- TEAM MANAGEMENT</span>
             </div>
             <div class="nav-item">
                 <a href="{% url 'userprofile-list' %}" class="nav-link {% if 'userprofile' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Team Members">
@@ -84,7 +90,7 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="#" class="nav-link" data-tooltip="Division Sections">
+                <a href="{% url 'beneficiarydiv' %}" class="nav-link {% if 'beneficiarydiv' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Beneficially Division Sections">
                     <i class="bi bi-diagram-3"></i>
                     <span class="nav-text">Division Sections</span>
                 </a>
@@ -93,7 +99,7 @@
             <!-- Strategic Planning Section -->
             <div class="nav-section-divider"></div>
             <div class="nav-section-header">
-                <span class="nav-text">STRATEGIC PLANNING</span>
+                <span class="nav-text">- STRATEGIC PLANNING</span>
             </div>
             <div class="nav-item">
                 <a href="{% url 'yearlyplan-list' %}" class="nav-link {% if 'yearlyplan' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Yearly Plans">
@@ -123,7 +129,7 @@
             <!-- System Administration -->
             <div class="nav-section-divider"></div>
             <div class="nav-section-header">
-                <span class="nav-text">ADMINISTRATION</span>
+                <span class="nav-text">- ADMINISTRATION</span>
             </div>
             <div class="nav-item">
                 <a href="{% url 'auditlog-list' %}" class="nav-link {% if 'auditlog' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Audit Logs">
@@ -147,6 +153,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <!-- Breadcrumb -->
+                    <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-custom">
                             {% block breadcrumb %}
@@ -155,17 +162,8 @@
                             {% endblock %}
                         </ol>
                     </nav>
-                    <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <!-- Search -->
-                    <div class="position-relative">
-                        <input type="text" class="form-control border-0 bg-gray-50" 
-                               placeholder="admin.widgets..." 
-                               style="width: 280px; padding: 0.75rem 1rem 0.75rem 2.75rem; border-radius: 0.75rem; background-color: #f8fafc; font-size: 0.875rem;">
-                        <i class="bi bi-search position-absolute" 
-                           style="left: 1rem; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 1rem;"></i>
-                    </div>
                     
                     <!-- Action Buttons -->
                     <div class="d-flex align-items-center gap-2">

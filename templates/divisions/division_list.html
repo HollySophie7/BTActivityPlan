@@ -3,8 +3,12 @@
 {% block title %}Divisions - Project Tracker{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-<li class="breadcrumb-item active" aria-current="page">Divisions</li>
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="bi bi-house-door"></i></a></li>
+{% if type == 'division' %}
+<li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
+{% elif type == 'beneficiary' %}
+<li class="breadcrumb-item"><a href="{% url 'beneficiarydiv' %}">Beneficiary Divisions</a></li>
+{% endif %}
 {% endblock %}
 
 {% block page_title %}Division Management{% endblock %}
@@ -12,16 +16,22 @@
 {% block content %}
 <div class="row mb-4">
     <div class="col-md-6">
+        {% if type == 'division' %}
         <a href="{% url 'division-create' %}" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-2"></i>New Division
+            <i class="bi bi-plus-circle me-2"></i> Add Division 
         </a>
+        {% elif type == 'beneficiary' %}
+        <a href="{% url 'beneficiarydiv-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i> New Beneficially Division
+        </a>
+        {% endif %}
     </div>
 </div>
 
 <div class="card dashboard-card">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
-            <i class="bi bi-building me-2"></i>All Divisions
+            <i class="bi bi-building me-2"></i>{% if type == 'division' %} All Divisions{% elif type == 'beneficiary' %}All Beneficially Divisions{% endif %}
             <span class="badge bg-secondary ms-2">{{ divisions|length }}</span>
         </h6>
     </div>
@@ -31,6 +41,9 @@
                 <thead class="table-light">
                     <tr>
                         <th>Division Name</th>
+                        {% if type == 'beneficiary' %}
+                        <th>Division</th>
+                        {% endif %}
                         <th>Leader</th>
                         <th>Actions</th>
                     </tr>
@@ -39,13 +52,24 @@
                     {% for division in divisions %}
                     <tr>
                         <td>
+                            {% if type == 'division' %}
                             <a href="{% url 'division-detail' division.pk %}" class="text-decoration-none fw-bold">
                                 {{ division.get_name_display }}
                             </a>
+                            {% elif type == 'beneficiary' %}
+                            <a href="{% url 'beneficiarydiv-detail' division.pk %}" class="text-decoration-none fw-bold">
+                                {{ division.get_name_display }}
+                            </a>
+                            {% endif %}
                         </td>
-                        <td>{{ division.leader|default:"Not assigned" }}</td>
+                        {% if type == 'beneficiary' %}
+                        <td>{{ division.division|default:"Not assigned" }}</td>
+                        {% endif %}
+
+                        <td>{{ division.get_leader|default:"Not assigned" }}</td>
                         <td>
                             <div class="btn-group" role="group">
+                                {% if type == 'division' %}
                                 <a href="{% url 'division-detail' division.pk %}" class="btn btn-sm btn-outline-info">
                                     <i class="bi bi-eye"></i>
                                 </a>
@@ -55,6 +79,17 @@
                                 <a href="{% url 'division-delete' division.pk %}" class="btn btn-sm btn-outline-danger">
                                     <i class="bi bi-trash"></i>
                                 </a>
+                                {% elif type == 'beneficiary' %}
+                                <a href="{% url 'beneficiarydiv-detail' division.pk %}" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'beneficiarydiv-update' division.pk %}" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'beneficiarydiv-delete' division.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

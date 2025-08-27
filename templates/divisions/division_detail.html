@@ -3,8 +3,13 @@
 {% block title %}{{ division.get_name_display }} - Project Tracker{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="bi bi-house-door"></i></a></li>
+{% if type == 'division' %}
 <li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
+{% elif type == 'beneficiary' %}
+<li class="breadcrumb-item"><a href="{% url 'beneficiarydiv' %}">Beneficiary Divisions</a></li>
+{% endif %}
+
 <li class="breadcrumb-item active">{{ division.get_name_display }}</li>
 {% endblock %}
 
@@ -15,8 +20,13 @@
     <div class="card-header py-3 d-flex justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Division Details</h6>
         <div>
+            {% if type == 'division' %}
             <a href="{% url 'division-update' division.pk %}" class="btn btn-sm btn-warning">Edit</a>
             <a href="{% url 'division-delete' division.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            {% elif type == 'beneficiary' %}
+            <a href="{% url 'beneficiarydiv-update' division.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'beneficiarydiv-delete' division.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            {% endif %}
         </div>
     </div>
     <div class="card-body">
@@ -24,10 +34,22 @@
             <div class="col-sm-3"><strong>Name:</strong></div>
             <div class="col-sm-9">{{ division.get_name_display }}</div>
         </div>
+        {% if type == 'division' %}
         <div class="row mb-3">
             <div class="col-sm-3"><strong>Leader:</strong></div>
             <div class="col-sm-9">{{ division.leader|default:"Not assigned" }}</div>
         </div>
+        {% elif type == 'beneficiary' %}
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Division:</strong></div>
+            <div class="col-sm-9">{{ division.division|default:"Not assigned" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Leader:</strong></div>
+            <div class="col-sm-9">{{ division.division.leader|default:"Not assigned" }}</div>
+        </div>
+
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', dashboard, name='dashboard'),
+    path('', DashboardView.as_view(), name='dashboard'),
     
     # Project URLs
     path('projects/', ProjectListView.as_view(), name='project-list'),
@@ -24,6 +24,13 @@ urlpatterns = [
     path('divisions/create/', DivisionCreateView.as_view(), name='division-create'),
     path('divisions/<int:pk>/update/', DivisionUpdateView.as_view(), name='division-update'),
     path('divisions/<int:pk>/delete/', DivisionDeleteView.as_view(), name='division-delete'),
+
+    # BeneficiaryDivision URLs
+    path('beneficiary-divisions/', BeneficiaryDivisionListView.as_view(), name='beneficiarydiv'),
+    path('beneficiary-divisions/<int:pk>/', BeneficiaryDivisionDetailView.as_view(), name='beneficiarydiv-detail'),
+    path('beneficiary-divisions/create/', BeneficiaryDivisionCreateView.as_view(), name='beneficiarydiv-create'),
+    path('beneficiary-divisions/<int:pk>/update/', BeneficiaryDivisionUpdateView.as_view(), name='beneficiarydiv-update'),
+    path('beneficiary-divisions/<int:pk>/delete/', BeneficiaryDivisionDeleteView.as_view(), name='beneficiarydiv-delete'),
     
     # YearlyPlan URLs
     path('yearly-plans/', YearlyPlanListView.as_view(), name='yearlyplan-list'),
