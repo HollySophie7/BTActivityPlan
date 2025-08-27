@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ perspective.name }} - Project Tracker{% endblock %}
+
+{% block content %}
+<div class="card dashboard-card">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">{{ perspective.name }}</h6>
+        <div>
+            <a href="{% url 'perspective-update' perspective.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'perspective-delete' perspective.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Name:</strong></div>
+            <div class="col-sm-9">{{ perspective.name }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Description:</strong></div>
+            <div class="col-sm-9">{{ perspective.description|default:"Not provided"|linebreaksbr }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Weightage:</strong></div>
+            <div class="col-sm-9">{{ perspective.weightage|default:"Not set" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Division:</strong></div>
+            <div class="col-sm-9">{{ perspective.division|default:"Not assigned" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Created:</strong></div>
+            <div class="col-sm-9">{{ perspective.created_at|date:"F d, Y H:i" }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

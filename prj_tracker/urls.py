@@ -38,6 +38,13 @@ urlpatterns = [
     path('yearly-plans/create/', YearlyPlanCreateView.as_view(), name='yearlyplan-create'),
     path('yearly-plans/<int:pk>/update/', YearlyPlanUpdateView.as_view(), name='yearlyplan-update'),
     path('yearly-plans/<int:pk>/delete/', YearlyPlanDeleteView.as_view(), name='yearlyplan-delete'),
+
+    # Perspectives 
+    path('perspectives/', PerspectiveListView.as_view(), name='perspective-list'),
+    path('perspectives/<int:pk>/', PerspectiveDetailView.as_view(), name='perspective-detail'),
+    path('perspectives/create/', PerspectiveCreateView.as_view(), name='perspective-create'),
+    path('perspectives/<int:pk>/update/', PerspectiveUpdateView.as_view(), name='perspective-update'),
+    path('perspectives/<int:pk>/delete/', PerspectiveDeleteView.as_view(), name='perspective-delete'),
     
     # StrategicObjective URLs
     path('strategic-objectives/', StrategicObjectiveListView.as_view(), name='strategicobjective-list'),

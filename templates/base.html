@@ -108,7 +108,7 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="#" class="nav-link" data-tooltip="Perspectives">
+                <a href="{% url 'perspective-list' %}" class="nav-link {% if 'perspective' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Perspectives">
                     <i class="bi bi-eye"></i>
                     <span class="nav-text">Perspectives</span>
                 </a>
@@ -167,16 +167,10 @@
                     
                     <!-- Action Buttons -->
                     <div class="d-flex align-items-center gap-2">
-                        <!-- Theme Toggle -->
-                        <button class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center" 
-                                style="width: 40px; height: 40px; background-color: #f8fafc;" title="Toggle Theme">
-                            <i class="bi bi-moon" style="font-size: 1rem; color: #64748b;"></i>
-                        </button>
-                        
                         <!-- Notifications -->
                         <div class="position-relative">
                             <button class="btn btn-light border-0 rounded-circle d-flex align-items-center justify-content-center" 
-                                    style="width: 40px; height: 40px; background-color: #f8fafc;" title="Notifications">
+                                    style="width: 30px; height: 30px; background-color: #f8fafc;" title="Notifications">
                                 <i class="bi bi-bell" style="font-size: 1rem; color: #64748b;"></i>
                             </button>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
@@ -186,11 +180,11 @@
                     
                     <!-- User Dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-light d-flex align-items-center gap-2 border-0 py-2 px-3" 
+                        <button class="btn btn-light d-flex align-items-center gap-2 border-0 py-1 px-2" 
                                 type="button" data-bs-toggle="dropdown"
                                 style="border-radius: 0.75rem; background-color: #f8fafc;">
                             <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white" 
-                                 style="width: 32px; height: 32px; font-size: 0.875rem; font-weight: 600;">
+                                 style="width: 32px; height: 32px; font-size: 0.75rem; font-weight: 600;">
                                 {% if user.is_authenticated %}
                                     {{ user.username|first|upper }}
                                 {% else %}
@@ -202,11 +196,11 @@
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg" 
                             style="border-radius: 0.75rem; padding: 0.5rem; min-width: 200px; margin-top: 0.5rem;">
                             <li><a class="dropdown-item py-2 px-3 rounded-lg" href="{% url 'profile' %}" 
-                                   style="border-radius: 0.5rem;">
+                                   style="border-radius: 0.5rem; font-size: small;">
                                 <i class="bi bi-person me-2"></i>Profile
                             </a></li>
                             <li><a class="dropdown-item py-2 px-3 rounded-lg" href="#"
-                                   style="border-radius: 0.5rem;">
+                                   style="border-radius: 0.5rem; font-size: small;">
                                 <i class="bi bi-gear me-2"></i>Settings
                             </a></li>
                             <li><hr class="dropdown-divider my-2"></li>
@@ -214,7 +208,7 @@
                                 <form action="{% url 'logout' %}" method="post" class="m-0">
                                     {% csrf_token %}
                                     <button type="submit" class="dropdown-item py-2 px-3 w-100 text-start border-0 bg-transparent rounded-lg"
-                                            style="border-radius: 0.5rem;">
+                                            style="border-radius: 0.5rem; font-size: small;">
                                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                                     </button>
                                 </form>

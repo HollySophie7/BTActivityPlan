@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Perspectives - Project Tracker{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active">Perspectives</li>
+{% endblock %}
+
+{% block page_title %}Perspectives{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <a href="{% url 'perspective-create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>Add Perspective
+        </a>
+    </div>
+</div>
+
+<div class="card dashboard-card">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="bi bi-calendar4-range me-2"></i>All Perspectives
+        </h6>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Perspective Name</th>
+                        <th>Division</th>
+                        <th>Yearly Plan</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for perspective in perspectives %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'perspective-detail' perspective.pk %}" class="text-decoration-none fw-bold">
+                                {{ perspective.name }}
+                            </a>
+                        </td>
+                        <td>{{ perspective.yearly_plan|default:"Not assigned" }}</td>
+                        <td>{{ perspective.yearly_plan.division|default:"Not set" }}</td>
+                        <td>{{ perspective.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'perspective-detail' perspective.pk %}" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'perspective-update' perspective.pk %}" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'perspective-delete' perspective.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-calendar4-range display-6"></i>
+                                <p class="mt-2">No Perspectives found</p>
+                                <a href="{% url 'perspective-create' %}" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-2"></i>Create First Perspective
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

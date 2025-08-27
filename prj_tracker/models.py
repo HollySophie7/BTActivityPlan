@@ -48,6 +48,9 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 class Division(models.Model):
     name = models.CharField(max_length=100, unique=True)
     leader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -60,6 +63,9 @@ class Division(models.Model):
 class BeneficiaryDivisionSection(models.Model):
     name = models.CharField(max_length=100, unique=True)
     division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name='beneficiary_division_sections')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -74,8 +80,10 @@ class YearlyPlan(models.Model):
     name = models.CharField(max_length=100, unique=True)  
     description = models.TextField(null=True, blank=True)
     weightage = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     division = models.ForeignKey(Division, on_delete=models.CASCADE, related_name='yearly_plans', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    
 
     def __str__(self):
         return self.name
@@ -83,6 +91,8 @@ class YearlyPlan(models.Model):
 class Perspective(models.Model):
     name = models.CharField(max_length=100, unique=True, null=True, blank=True)  
     yearly_plan = models.ForeignKey(YearlyPlan, on_delete=models.CASCADE, related_name='perspectives')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -90,6 +100,8 @@ class Perspective(models.Model):
 class StrategicObjective(models.Model):
     strategic_objective_name = models.CharField(max_length=512, blank=True, null=True)
     perspective = models.ForeignKey(Perspective, on_delete=models.CASCADE, related_name='strategic_objective', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     
     def __str__(self):
         return f"{self.strategic_objective}"
@@ -102,6 +114,8 @@ class StrategicInitiative(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     performance_measure = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     
 
     def __str__(self):
@@ -124,12 +138,12 @@ class Project(models.Model):
     end_date = models.DateField(null=True, blank=True)
     progress = models.DecimalField(decimal_places=2, max_digits=4, default=0.00, blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='incoming')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     strategic_initiative = models.ForeignKey('StrategicInitiative', on_delete=models.SET_NULL, null=True, blank=True)
     quarterly_status = models.JSONField(default=dict, blank=True)  # Q1, Q2, Q3, Q4 status
     monthly_progress = models.JSONField(default=dict, blank=True)
     beneficiary_division_section = models.ForeignKey(BeneficiaryDivisionSection, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.project_name
@@ -183,6 +197,8 @@ class AuditLog(models.Model):
     device = models.CharField(max_length=100, null=True, blank=True)
     os = models.CharField(max_length=100, null=True, blank=True)
     ip_address = models.GenericIPAddressField(max_length=100,null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'{self.user} performed {self.action} on {self.model_name}'
