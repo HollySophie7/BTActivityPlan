@@ -127,8 +127,12 @@ class ProjectListView(LoginRequiredMixin, ListView):
         if search:
             queryset = queryset.filter(
                 Q(project_name__icontains=search) |
-                Q(developer__icontains=search) |
-                Q(system_analyst__icontains=search)
+                Q(developer__username__icontains=search) |
+                Q(developer__first_name__icontains=search) |
+                Q(developer__last_name__icontains=search) |
+                Q(system_analyst__username__icontains=search) |
+                Q(system_analyst__first_name__icontains=search) |
+                Q(system_analyst__last_name__icontains=search)
             )
         if status_filter:
             queryset = queryset.filter(status=status_filter)
@@ -298,11 +302,6 @@ class BeneficiaryDivisionDeleteView(LoginRequiredMixin, DeleteView):
 
 
 
-
-
-
-
-
 # YearlyPlan CRUD Views
 class YearlyPlanListView(LoginRequiredMixin, ListView):
     model = YearlyPlan
@@ -318,19 +317,57 @@ class YearlyPlanDetailView(LoginRequiredMixin, DetailView):
 class YearlyPlanCreateView(LoginRequiredMixin, CreateView):
     model = YearlyPlan
     template_name = 'yearlyplans/yearlyplan_form.html'
-    fields = ['name', 'description', 'weightage', 'division']
+    form_class = YearlyPlanForm
     success_url = reverse_lazy('yearlyplan-list')
 
 class YearlyPlanUpdateView(LoginRequiredMixin, UpdateView):
     model = YearlyPlan
     template_name = 'yearlyplans/yearlyplan_form.html'
-    fields = ['name', 'description', 'weightage', 'division']
+    form_class = YearlyPlanForm
     success_url = reverse_lazy('yearlyplan-list')
 
 class YearlyPlanDeleteView(LoginRequiredMixin, DeleteView):
     model = YearlyPlan
     template_name = 'yearlyplans/yearlyplan_confirm_delete.html'
     success_url = reverse_lazy('yearlyplan-list')
+
+
+
+#Perspectives Views 
+
+class PerspectiveListView(LoginRequiredMixin, ListView):
+    model = Perspective
+    template_name = 'perspectives/perspective_list.html'
+    context_object_name = 'perspectives'
+    paginate_by = 20
+
+class PerspectiveDetailView(LoginRequiredMixin, DetailView):
+    model = Perspective
+    template_name = 'perspectives/perspective_detail.html'
+    context_object_name = 'perspective'
+
+class PerspectiveCreateView(LoginRequiredMixin, CreateView):
+    model = Perspective
+    template_name = 'perspectives/perspective_form.html'
+    form_class = PerspectiveForm
+    success_url = reverse_lazy('perspective-list')
+
+class PerspectiveUpdateView(LoginRequiredMixin, UpdateView):
+    model = Perspective
+    template_name = 'perspectives/perspective_form.html'
+    form_class = PerspectiveForm
+    success_url = reverse_lazy('perspective-list')
+
+class PerspectiveDeleteView(LoginRequiredMixin, DeleteView):
+    model = Perspective
+    template_name = 'perspectives/perspective_confirm_delete.html'
+    success_url = reverse_lazy('perspective-list')
+
+
+
+
+
+
 
 # StrategicObjective CRUD Views
 class StrategicObjectiveListView(LoginRequiredMixin, ListView):

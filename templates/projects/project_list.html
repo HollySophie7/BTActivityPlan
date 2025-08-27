@@ -20,8 +20,8 @@
     <div class="col-md-6">
         <form method="get" class="d-flex">
             <input type="text" name="search" class="form-control me-2" placeholder="Search projects..." 
-                   value="{{ request.GET.search }}">
-            <select name="status" class="form-select me-2">
+                   value="{{ request.GET.search }}" style="padding: 10px; font-size: 12px;">
+            <select name="status" class="form-select me-2" style="font-size: 12px;">
                 <option value="">All Status</option>
                 <option value="incoming" {% if request.GET.status == 'incoming' %}selected{% endif %}>Incoming</option>
                 <option value="in progress" {% if request.GET.status == 'in progress' %}selected{% endif %}>In Progress</option>
@@ -29,7 +29,7 @@
                 <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
                 <option value="delayed" {% if request.GET.status == 'delayed' %}selected{% endif %}>Delayed</option>
             </select>
-            <button type="submit" class="btn btn-outline-primary">
+            <button type="submit" class="btn btn-outline-primary" style="font-size: 12px;">
                 <i class="bi bi-search"></i>
             </button>
         </form>
