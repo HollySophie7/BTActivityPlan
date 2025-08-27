@@ -74,10 +74,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 project.priority = 'info'
         
         # Strategic objectives with completion status
-        strategic_objectives = StrategicObjective.objects.all()[:6]
+        strategic_objectives = StrategicInitiative.objects.all()[:6]
         for objective in strategic_objectives:
             # Calculate completion percentage based on associated projects
-            objective_projects = Project.objects.filter(strategic_objective_name=objective)
+            objective_projects = Project.objects.filter(strategic_initiative=objective)
             if objective_projects.exists():
                 total_progress = sum(float(p.progress) for p in objective_projects)
                 objective.completion_percentage = total_progress / objective_projects.count()
@@ -154,12 +154,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = 'projects/project_form.html'
-    fields = [
-        'project_name', 'developer', 'system_analyst', 'start_date', 'end_date',
-        'progress', 'status', 'responsible_person', 'comments', 'beneficiary_division',
-        'strategic_objective', 'strategic_initiatives_or_activities', 'yearly_plan',
-        'performance_measure', 'color_status'
-    ]
+    form_class = ProjectForm
     success_url = reverse_lazy('project-list')
     
     def form_valid(self, form):
@@ -352,13 +347,13 @@ class StrategicObjectiveDetailView(LoginRequiredMixin, DetailView):
 class StrategicObjectiveCreateView(LoginRequiredMixin, CreateView):
     model = StrategicObjective
     template_name = 'strategicobjectives/strategicobjective_form.html'
-    fields = ['strategic_objective', 'strategic_initiatives_or_activities', 'perspective', 'responsible_person', 'start_date', 'end_date']
+    form_class = StrategicObjectiveForm
     success_url = reverse_lazy('strategicobjective-list')
 
 class StrategicObjectiveUpdateView(LoginRequiredMixin, UpdateView):
     model = StrategicObjective
     template_name = 'strategicobjectives/strategicobjective_form.html'
-    fields = ['strategic_objective', 'strategic_initiatives_or_activities', 'perspective', 'responsible_person', 'start_date', 'end_date']
+    form_class = StrategicObjectiveForm
     success_url = reverse_lazy('strategicobjective-list')
 
 class StrategicObjectiveDeleteView(LoginRequiredMixin, DeleteView):
@@ -381,13 +376,13 @@ class StrategicInitiativeDetailView(LoginRequiredMixin, DetailView):
 class StrategicInitiativeCreateView(LoginRequiredMixin, CreateView):
     model = StrategicInitiative
     template_name = 'strategicinitiatives/strategicinitiative_form.html'
-    fields = ['strategic_initiatives_or_activities']
+    form_class = StrategicInitiativeForm
     success_url = reverse_lazy('strategicinitiative-list')
 
 class StrategicInitiativeUpdateView(LoginRequiredMixin, UpdateView):
     model = StrategicInitiative
     template_name = 'strategicinitiatives/strategicinitiative_form.html'
-    fields = ['strategic_initiatives_or_activities']
+    form_class = StrategicInitiativeForm
     success_url = reverse_lazy('strategicinitiative-list')
 
 class StrategicInitiativeDeleteView(LoginRequiredMixin, DeleteView):

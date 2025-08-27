@@ -19,7 +19,7 @@
                     <tr>
                         <td>
                             <a href="{% url 'strategicinitiative-detail' initiative.pk %}" class="text-decoration-none">
-                                {{ initiative.strategic_initiatives_or_activities|truncatechars:100 }}
+                                {{ initiative.strategic_initiative_name|truncatechars:100 }}
                             </a>
                         </td>
                         <td>

@@ -92,7 +92,7 @@ class StrategicObjective(models.Model):
     perspective = models.ForeignKey(Perspective, on_delete=models.CASCADE, related_name='strategic_objective', null=True, blank=True)
     
     def __str__(self):
-        return f"{self.strategic_objective}"
+        return f"{self.strategic_objective_name}"
     
 class StrategicInitiative(models.Model):
     strategic_objective = models.ForeignKey(StrategicObjective, on_delete=models.CASCADE, related_name='strategic_objective', null=True, blank=True)
@@ -105,7 +105,7 @@ class StrategicInitiative(models.Model):
     
 
     def __str__(self):
-        return f"{self.strategic_initiatives_or_activities}"
+        return f"{self.strategic_initiative_name}"
 
 
 class Project(models.Model):

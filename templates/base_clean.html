@@ -50,19 +50,19 @@
             <div class="nav-item">
                 <a href="{% url 'projectprogress-list' %}" class="nav-link {% if 'projectprogress' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Progress Tracking">
                     <i class="bi bi-graph-up"></i>
-                    <span class="nav-text">Progress Tracking</span>
+                    {% comment %} <span class="nav-text">Progress Tracking</span> {% endcomment %}
                 </a>
             </div>
             <div class="nav-item">
                 <a href="#" class="nav-link" data-tooltip="Project Comments">
                     <i class="bi bi-chat-left-text"></i>
-                    <span class="nav-text">Project Comments</span>
+                    {% comment %} <span class="nav-text">Project Comments</span> {% endcomment %}
                 </a>
             </div>
             <div class="nav-item">
                 <a href="#" class="nav-link" data-tooltip="Weekly Updates">
                     <i class="bi bi-calendar-week"></i>
-                    <span class="nav-text">Weekly Updates</span>
+                    {% comment %} <span class="nav-text">Weekly Updates</span> {% endcomment %}
                 </a>
             </div>
             
