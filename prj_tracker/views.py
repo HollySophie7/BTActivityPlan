@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Count, Q
 from django.utils import timezone
 from datetime import datetime, timedelta
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,8 +13,12 @@ from .models import (
 
 from .forms import *
 
-def dashboard(request):
-    if request.user.is_authenticated:
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
         # Basic project statistics
         total_projects = Project.objects.count()
         active_projects = Project.objects.filter(status__in=['incoming', 'in progress']).count()
@@ -59,7 +63,6 @@ def dashboard(request):
             status__in=['incoming', 'in progress']
         ).order_by('end_date')[:5]
         
-        print(upcoming_deadlines)
         # Add days remaining for each deadline
         for project in upcoming_deadlines:
             project.days_remaining = (project.end_date - today).days
@@ -83,7 +86,7 @@ def dashboard(request):
                 objective.completion_percentage = 0
                 objective.projects_count = 0
         
-        context = {
+        context.update({
             'total_projects': total_projects,
             'active_projects': active_projects,
             'completed_projects': completed_projects,
@@ -105,10 +108,9 @@ def dashboard(request):
             'recent_projects': recent_projects,
             'upcoming_deadlines': upcoming_deadlines,
             'strategic_objectives': strategic_objectives,
-        }
-        return render(request, 'dashboard.html', context)
-    else:
-        return render(request, 'authentication/login.html')
+        })
+        
+        return context
 
 # Project CRUD Views
 class ProjectListView(LoginRequiredMixin, ListView):
@@ -141,9 +143,8 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = 'projects/project_form.html'
-    fields = [
-        'project_name', 'developer', 'system_analyst', 'start_date', 'end_date', 'status',  'beneficiary_division_section', 'strategic_initiative',
-    ]
+    form_class = ProjectForm
+
     success_url = reverse_lazy('project-list')
     
     def form_valid(self, form):
@@ -189,7 +190,7 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
 class UserProfileCreateView(LoginRequiredMixin, CreateView):
     model = UserProfile
     template_name = 'userprofiles/userprofile_form.html'
-    fields = ['role', 'availability_status', 'responsible_person', 'current_projects_count', 'specialization']
+    form_class = UserProfileForm
     success_url = reverse_lazy('userprofile-list')
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -215,6 +216,11 @@ class DivisionListView(LoginRequiredMixin, ListView):
     context_object_name = 'divisions'
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'division'
+        return context
+
 class DivisionDetailView(LoginRequiredMixin, DetailView):
     model = Division
     template_name = 'divisions/division_detail.html'
@@ -223,19 +229,84 @@ class DivisionDetailView(LoginRequiredMixin, DetailView):
 class DivisionCreateView(LoginRequiredMixin, CreateView):
     model = Division
     template_name = 'divisions/division_form.html'
-    fields = ['name', 'leader']
+    form_class = DivisionForm
     success_url = reverse_lazy('division-list')
 
 class DivisionUpdateView(LoginRequiredMixin, UpdateView):
     model = Division
     template_name = 'divisions/division_form.html'
-    fields = ['name', 'leader']
+    form_class = DivisionForm
     success_url = reverse_lazy('division-list')
 
 class DivisionDeleteView(LoginRequiredMixin, DeleteView):
     model = Division
     template_name = 'divisions/division_confirm_delete.html'
     success_url = reverse_lazy('division-list')
+
+
+#Beneficially Division
+
+class BeneficiaryDivisionListView(LoginRequiredMixin, ListView):
+    model = BeneficiaryDivisionSection
+    template_name = 'divisions/division_list.html'
+    context_object_name = 'divisions'
+    paginate_by = 20
+    success_url = reverse_lazy('beneficiarydiv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'beneficiary'
+        return context
+
+class BeneficiaryDivisionDetailView(LoginRequiredMixin, DetailView):
+    model = BeneficiaryDivisionSection
+    template_name = 'divisions/division_detail.html'
+    context_object_name = 'division'
+    success_url = reverse_lazy('beneficiarydiv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'beneficiary'
+        return context
+
+class BeneficiaryDivisionCreateView(LoginRequiredMixin, CreateView):
+    model = BeneficiaryDivisionSection
+    template_name = 'divisions/division_form.html'
+    form_class = BeneficiaryDivisionSectionForm
+    success_url = reverse_lazy('beneficiarydiv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'beneficiary'
+        return context
+
+class BeneficiaryDivisionUpdateView(LoginRequiredMixin, UpdateView):
+    model = BeneficiaryDivisionSection
+    template_name = 'divisions/division_form.html'
+    form_class = BeneficiaryDivisionSectionForm
+    success_url = reverse_lazy('beneficiarydiv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'beneficiary'
+        return context
+
+class BeneficiaryDivisionDeleteView(LoginRequiredMixin, DeleteView):
+    model = BeneficiaryDivisionSection
+    template_name = 'divisions/division_confirm_delete.html'
+    success_url = reverse_lazy('beneficiarydiv')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'beneficiary'
+        return context
+
+
+
+
+
+
+
 
 # YearlyPlan CRUD Views
 class YearlyPlanListView(LoginRequiredMixin, ListView):
