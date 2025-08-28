@@ -5,12 +5,35 @@
     <div class="card-header py-3 d-flex justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Strategic Initiative</h6>
         <div>
-            <a href="{% url 'strategic-initiative-update' initiative.pk %}" class="btn btn-sm btn-warning">Edit</a>
-            <a href="{% url 'strategic-initiative-delete' initiative.pk %}" class="btn btn-sm btn-danger">Delete</a>
+            <a href="{% url 'strategicinitiative-update' initiative.pk %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'strategicinitiative-delete' initiative.pk %}" class="btn btn-sm btn-danger">Delete</a>
         </div>
     </div>
     <div class="card-body">
-        <p>{{ initiative.strategic_initiatives_or_activities|linebreaksbr }}</p>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Strategic Initiative:</strong></div>
+            <div class="col-sm-9">{{ initiative.strategic_initiative_name|linebreaksbr }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Perspective:</strong></div>
+            <div class="col-sm-9">{{ initiative.perspective.name|default:"Not assigned" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Strategic Objective:</strong></div>
+            <div class="col-sm-9">{{ initiative.strategic_objective.strategic_objective_name|linebreaksbr }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Responsible Person:</strong></div>
+            <div class="col-sm-9">{{ initiative.responsible_person.get_full_name|default:initiative.responsible_person.username }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>Start Date:</strong></div>
+            <div class="col-sm-9">{{ initiative.start_date|date:"F d, Y"|default:"Not set" }}</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3"><strong>End Date:</strong></div>
+            <div class="col-sm-9">{{ initiative.end_date|date:"F d, Y"|default:"Not set" }}</div>
+        </div> 
     </div>
 </div>
 {% endblock %}

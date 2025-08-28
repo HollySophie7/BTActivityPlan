@@ -12,7 +12,13 @@
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead class="table-light">
-                    <tr><th>Initiative</th><th>Actions</th></tr>
+                    <tr>
+                        <th style="width: 25%;">Initiative</th>
+                        <th style="width: 20%;">Objective</th>
+                        <th style="width: 15%;">Perspective</th>
+                        <th style="width: 15%;">Responsible Person</th>
+                        <th style="width: 15%;">Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {% for initiative in initiatives %}
@@ -23,15 +29,56 @@
                             </a>
                         </td>
                         <td>
+                            {% if initiative.strategic_objective %}
+                                <a href="{% url 'strategicobjective-detail' initiative.strategic_objective.pk %}" class="text-decoration-none">
+                                    {{ initiative.strategic_objective.strategic_objective_name|truncatechars:80 }}
+                                </a>
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if initiative.strategic_objective.perspective %}
+                                <a href="{% url 'perspective-detail' initiative.strategic_objective.perspective.pk %}" class="text-decoration-none">
+                                    {{ initiative.strategic_objective.perspective.name }}
+                                </a>
+                            {% else %}
+                                <span class="text-muted">Not set</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if initiative.responsible_person %}
+                                {{ initiative.responsible_person }}
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                        <td>
                             <div class="btn-group">
-                                <a href="{% url 'strategicinitiative-detail' initiative.pk %}" class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>
-                                <a href="{% url 'strategicinitiative-update' initiative.pk %}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
-                                <a href="{% url 'strategicinitiative-delete' initiative.pk %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                <a href="{% url 'strategicinitiative-detail' initiative.pk %}" class="btn btn-sm btn-outline-info">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'strategicinitiative-update' initiative.pk %}" class="btn btn-sm btn-outline-warning">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'strategicinitiative-delete' initiative.pk %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="2" class="text-center py-5">No strategic initiatives found</td></tr>
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-lightbulb display-6"></i>
+                                <p class="mt-2">No strategic initiatives found</p>
+                                <a href="{% url 'strategicinitiative-create' %}" class="btn btn-primary">
+                                    <i class="bi bi-plus-circle me-2"></i>Create First Initiative
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>

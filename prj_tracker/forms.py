@@ -41,7 +41,7 @@ class PerspectiveForm(ModelForm):
 class StrategicObjectiveForm(ModelForm):
     class Meta:
         model = StrategicObjective
-        fields = ['strategic_objective_name']
+        fields = ['strategic_objective_name', 'perspective']
 
     def __init__(self, *args, **kwargs):
         super(StrategicObjectiveForm, self).__init__(*args, **kwargs)

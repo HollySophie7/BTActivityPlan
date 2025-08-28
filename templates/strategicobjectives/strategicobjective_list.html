@@ -18,10 +18,10 @@
             <table class="table table-hover mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Objective</th>
-                        <th>Perspective</th>
-                        <th>Responsible Person</th>
-                        <th>Actions</th>
+                        <th style="width: 50%;">Objective</th>
+                        <th style="width: 30%;">Perspective</th>
+                        {% comment %} <th style="width: 20%;">Responsible Person</th> {% endcomment %}
+                        <th style="width: 15%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,11 +29,29 @@
                     <tr>
                         <td>
                             <a href="{% url 'strategicobjective-detail' objective.pk %}" class="text-decoration-none">
-                                {{ objective.strategic_objective_name|truncatechars:50 }}
+                                {{ objective.strategic_objective_name }}
                             </a>
                         </td>
-                        <td>{{ objective.perspective|default:"Not assigned" }}</td>
-                        <td>{{ objective.responsible_person|default:"Not assigned" }}</td>
+                        <td>
+                            {% if objective.perspective %}
+                                <a href="{% url 'perspective-detail' objective.perspective.pk %}" class="text-decoration-none">
+                                    {{ objective.perspective.name }}
+                                </a>
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                        {% comment %} <td>
+                            {% if objective.responsible_person %}
+                                {% if objective.responsible_person.first_name or objective.responsible_person.last_name %}
+                                    {{ objective.responsible_person.first_name }} {{ objective.responsible_person.last_name }}
+                                {% else %}
+                                    {{ objective.responsible_person.username }}
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td> {% endcomment %}
                         <td>
                             <div class="btn-group" role="group">
                                 <a href="{% url 'strategicobjective-detail' objective.pk %}" class="btn btn-sm btn-outline-info">

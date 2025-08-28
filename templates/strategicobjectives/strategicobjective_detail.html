@@ -19,7 +19,7 @@
             <div class="col-sm-3"><strong>Perspective:</strong></div>
             <div class="col-sm-9">{{ objective.perspective|default:"Not assigned" }}</div>
         </div>
-        <div class="row mb-3">
+        {% comment %} <div class="row mb-3">
             <div class="col-sm-3"><strong>Responsible Person:</strong></div>
             <div class="col-sm-9">{{ objective.responsible_person|default:"Not assigned" }}</div>
         </div>
@@ -30,7 +30,7 @@
         <div class="row mb-3">
             <div class="col-sm-3"><strong>End Date:</strong></div>
             <div class="col-sm-9">{{ objective.end_date|date:"F d, Y"|default:"Not set" }}</div>
-        </div>
+        </div> {% endcomment %}
     </div>
 </div>
 {% endblock %}

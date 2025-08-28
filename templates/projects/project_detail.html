@@ -5,7 +5,7 @@
 {% block breadcrumb %}
 <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
 <li class="breadcrumb-item"><a href="{% url 'project-list' %}">Projects</a></li>
-<li class="breadcrumb-item active" aria-current="page">{{ project.project_name|truncatechars:30 }}</li>
+<li class="breadcrumb-item active" aria-current="page">{{ project.project_name }}</li>
 {% endblock %}
 
 {% block page_title %}{{ project.project_name }}{% endblock %}
@@ -28,21 +28,33 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-3"><strong>Status:</strong></div>
-                    <div class="col-sm-9">
-                        <span class="badge 
-                            {% if project.status == 'completed' %}bg-success
-                            {% elif project.status == 'in progress' %}bg-primary
-                            {% elif project.status == 'incoming' %}bg-info
-                            {% elif project.status == 'delayed' %}bg-danger
-                            {% else %}bg-secondary{% endif %}">
-                            {{ project.get_status_display }}
-                        </span>
+                    <div class="row mb-3">
+                        <div class="row mb-3">
+                        <div class="col-sm-3"><strong>Project:</strong></div>
+                        <div class="col-sm-9">{{ project.project_name|default:"Not specified" }}</div>
                     </div>
-                </div>
 
-                <div class="row mb-3">
+                    <div class="row mb-3">
+                        <div class="row mb-3">
+                        <div class="col-sm-3"><strong>Perspective:</strong></div>
+                        <div class="col-sm-9">{{ project.strategic_initiative.perspective.name|default:"Not specified" }}</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="row mb-3">
+                        <div class="col-sm-3"><strong>Strategic Objective:</strong></div>
+                        <div class="col-sm-9">{{ project.strategic_initiative.strategic_objective.strategic_objective_name|default:"Not specified" }}</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="row mb-3">
+                        <div class="col-sm-3"><strong>Strategic Initiative:</strong></div>
+                        <div class="col-sm-9">{{ project.strategic_initiative.strategic_initiative_name|default:"Not specified" }}</div>
+                    </div>
+
+                   
+
+                {% comment %} <div class="row mb-3">
                     <div class="col-sm-3"><strong>Color Status:</strong></div>
                     <div class="col-sm-9">
                         <span class="badge" style="background-color: 
@@ -52,6 +64,28 @@
                             {% elif project.color_status == 'red' %}#dc3545
                             {% else %}#6c757d{% endif %};">
                             {{ project.get_color_status_display }}
+                        </span>
+                    </div>
+                </div> {% endcomment %}
+                 
+
+                <div class="row mb-3">
+                    <div class="col-sm-3"><strong>Timeline:</strong></div>
+                    <div class="col-sm-9">
+                        <strong>Start:</strong> {{ project.start_date|date:"F d, Y" }}<br>
+                        <strong>End:</strong> {{ project.end_date|date:"F d, Y" }}
+                    </div>
+                </div>
+
+                <div class="col-sm-3"><strong>Status:</strong></div>
+                    <div class="col-sm-9">
+                        <span class="badge 
+                            {% if project.status == 'completed' %}bg-success
+                            {% elif project.status == 'in progress' %}bg-primary
+                            {% elif project.status == 'incoming' %}bg-info
+                            {% elif project.status == 'delayed' %}bg-danger
+                            {% else %}bg-secondary{% endif %}">
+                            {{ project.get_status_display }}
                         </span>
                     </div>
                 </div>
@@ -68,33 +102,25 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3"><strong>Timeline:</strong></div>
-                    <div class="col-sm-9">
-                        <strong>Start:</strong> {{ project.start_date|date:"F d, Y" }}<br>
-                        <strong>End:</strong> {{ project.end_date|date:"F d, Y" }}
-                    </div>
-                </div>
-
-                <div class="row mb-3">
                     <div class="col-sm-3"><strong>Team:</strong></div>
                     <div class="col-sm-9">
                         <strong>Developer:</strong> {{ project.developer|default:"Not assigned" }}<br>
                         <strong>System Analyst:</strong> {{ project.system_analyst|default:"Not assigned" }}<br>
-                        <strong>Responsible Person:</strong> {{ project.responsible_person|default:"Not assigned" }}
+                        <strong>Responsible Person:</strong> {{ project.strategic_initiative.responsible_person|default:"Not assigned" }}
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3"><strong>Division:</strong></div>
-                    <div class="col-sm-9">{{ project.beneficiary_division|default:"Not specified" }}</div>
+                    <div class="col-sm-3"><strong>Beneficiary Division:</strong></div>
+                    <div class="col-sm-9">{{ project.beneficiary_division_section.division.name|default:"Not specified" }}</div>
                 </div>
 
-                {% if project.comments %}
+                {% comment %} {% if project.comments %}
                 <div class="row mb-3">
                     <div class="col-sm-3"><strong>Comments:</strong></div>
-                    <div class="col-sm-9">{{ project.comments|linebreaksbr }}</div>
+                    <div class="col-sm-9">{{ comment.comment|linebreaksbr }}</div>
                 </div>
-                {% endif %}
+                {% endif %} {% endcomment %}
 
                 {% if project.performance_measure %}
                 <div class="row mb-3">
@@ -116,7 +142,7 @@
         </div>
     </div>
 
-    <div class="col-lg-4">
+    {% comment %} <div class="col-lg-4">
         <div class="card dashboard-card mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">
@@ -139,7 +165,7 @@
                     {{ project.strategic_initiatives_or_activities|default:"Not assigned" }}
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 
         <div class="card dashboard-card">
             <div class="card-header py-3">

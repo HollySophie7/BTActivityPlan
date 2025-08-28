@@ -89,7 +89,7 @@ class YearlyPlan(models.Model):
         return self.name
 
 class Perspective(models.Model):
-    name = models.CharField(max_length=100, unique=True, null=True, blank=True)  
+    name = models.CharField(max_length=100, null=True, blank=True)  
     yearly_plan = models.ForeignKey(YearlyPlan, on_delete=models.CASCADE, related_name='perspectives')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
