@@ -440,13 +440,13 @@ class ProjectProgressDetailView(LoginRequiredMixin, DetailView):
 class ProjectProgressCreateView(LoginRequiredMixin, CreateView):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_form.html'
-    fields = ['project', 'month', 'year', 'status', 'notes']
+    form_class = ProjectProgressForm
     success_url = reverse_lazy('projectprogress-list')
 
 class ProjectProgressUpdateView(LoginRequiredMixin, UpdateView):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_form.html'
-    fields = ['project', 'month', 'year', 'status', 'notes']
+    form_class = ProjectProgressForm
     success_url = reverse_lazy('projectprogress-list')
 
 class ProjectProgressDeleteView(LoginRequiredMixin, DeleteView):
@@ -473,6 +473,7 @@ class ProjectsTimelineView(LoginRequiredMixin, TemplateView):
         perspective_id = request.GET.get('perspective')
         objective_id = request.GET.get('objective')
         initiative_id = request.GET.get('initiative')
+
 
         # Filter initiatives and objectives first
         if perspective_id:
@@ -502,8 +503,13 @@ class ProjectsTimelineView(LoginRequiredMixin, TemplateView):
             'outgoing': projects.filter(status__icontains='outgoing').count(),
         }
 
+        final_projects = []
+        if perspective_id != None or objective_id != None or initiative_id != None:
+            print(f'-------XX------>{perspective_id}, {objective_id}, {initiative_id}')
+            final_projects = projects
+
         context = {
-            'projects': projects,
+            'projects': final_projects,
             'perspectives': perspectives,
             'objectives': objectives,
             'initiatives': initiatives,

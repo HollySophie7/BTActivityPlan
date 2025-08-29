@@ -48,13 +48,13 @@
                 <span class="nav-text"> - PROJECT MANAGEMENT</span>
             </div>
             <div class="nav-item">
-                <a href="{% url 'project-list' %}" class="nav-link {% if 'project' in request.resolver_match.url_name and 'projectprogress' not in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects">
+                <a href="{% url 'project-list' %}" class="nav-link {% if 'project-list' in request.resolver_match.url_name and 'projectprogress' not in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects">
                     <i class="bi bi-kanban"></i>
                     <span class="nav-text">Projects</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{% url 'projects-timeline' %}" class="nav-link {% if 'projects-timeline' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects Timeline">
+                <a href="{% url 'projects-timeline' %}" class="nav-link {% if 'projects-timeline' == request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects Timeline">
                     <i class="bi bi-calendar4-range"></i>
                     <span class="nav-text">Projects Timeline</span>
                 </a>

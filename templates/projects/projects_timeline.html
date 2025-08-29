@@ -78,29 +78,43 @@
                         </div>
                     </div>
                 </form>
-                
-                <!-- Filter Summary -->
-                {% if request.GET.perspective or request.GET.status or request.GET.division %}
-                <div class="mt-3 p-3 bg-light rounded">
-                    <h6 class="mb-2">Current Filters:</h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        {% if request.GET.perspective %}
-                        <span class="badge bg-primary">{{ request.GET.perspective|capfirst }}</span>
-                        {% endif %}
-                        {% if request.GET.status %}
-                        <span class="badge bg-secondary">{{ request.GET.status|capfirst }}</span>
-                        {% endif %}
-                        {% if request.GET.division %}
-                        <span class="badge bg-info">{{ request.GET.division }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
+<!-- Legend -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="mb-3">Status Key:</h6>
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="legend-item">
+                        <span class="legend-color status-completed"></span>
+                        <span>Completed</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color status-in_progress"></span>
+                        <span>In Progress</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color status-incoming"></span>
+                        <span>Incoming</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color status-delayed"></span>
+                        <span>Delayed</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color status-outgoing"></span>
+                        <span>Outgoing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Timeline Calendar -->
 <div class="row">
@@ -190,42 +204,7 @@
     </div>
 </div>
 
-<!-- Legend -->
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h6 class="mb-3">Status Legend:</h6>
-                <div class="d-flex flex-wrap gap-3">
-                    <div class="legend-item">
-                        <span class="legend-color status-completed"></span>
-                        <span>Completed</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-in-progress"></span>
-                        <span>In Progress</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-incoming"></span>
-                        <span>Incoming</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-delayed"></span>
-                        <span>Delayed</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-outgoing"></span>
-                        <span>On Hold</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-not-started"></span>
-                        <span>Not Started</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 {% endblock %}
 
 {% block extra_js %}

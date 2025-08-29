@@ -107,7 +107,7 @@ class UserProfileForm(ModelForm):
 class ProjectProgressForm(ModelForm):
     class Meta:
         model = ProjectProgress
-        fields = ['project']
+        fields = ['project', 'month', 'year', 'status', 'notes']
 
     def __init__(self, *args, **kwargs):
         super(ProjectProgressForm, self).__init__(*args, **kwargs)
