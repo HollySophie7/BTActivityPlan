@@ -31,7 +31,7 @@
 <!-- Team Grid -->
 <div class="card dashboard-card">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">
+        <h6 class="m-0 font-weight text-primary">
             <i class="bi bi-people me-2"></i>Team Members
             <span class="badge bg-secondary ms-2">{{ profiles|length }}</span>
         </h6>
@@ -65,7 +65,7 @@
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-person-circle text-primary me-2" style="font-size: 2rem;"></i>
                                 <div>
-                                    <div class="fw-bold">
+                                    <div class="fw">
                                         <a href="{% url 'userprofile-detail' profile.pk %}" class="text-decoration-none">
                                             {{ profile.user.get_full_name|default:profile.user.username }}
                                         </a>

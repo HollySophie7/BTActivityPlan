@@ -48,9 +48,15 @@
                 </a>
             </div>
             <div class="nav-item">
-                <a href="{% url 'projectprogress-list' %}" class="nav-link {% if 'projectprogress' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Progress Tracking">
+                <a href="{% url 'projects-timeline' %}" class="nav-link {% if 'projects-timeline' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects Timeline">
                     <i class="bi bi-graph-up"></i>
-                    {% comment %} <span class="nav-text">Progress Tracking</span> {% endcomment %}
+                    <span class="nav-text">Projects Timeline</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="{% url 'projectprogress-list' %}" class="nav-link {% if 'projectprogress' in request.resolver_match.url_name %}active{% endif %}" data-tooltip="Projects Timeline">
+                    <i class="bi bi-graph-up"></i>
+                    <span class="nav-text">Progress Tracking</span>
                 </a>
             </div>
             <div class="nav-item">

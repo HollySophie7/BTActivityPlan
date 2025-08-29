@@ -367,8 +367,6 @@ class PerspectiveDeleteView(LoginRequiredMixin, DeleteView):
 
 
 
-
-
 # StrategicObjective CRUD Views
 class StrategicObjectiveListView(LoginRequiredMixin, ListView):
     model = StrategicObjective
@@ -455,6 +453,65 @@ class ProjectProgressDeleteView(LoginRequiredMixin, DeleteView):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_confirm_delete.html'
     success_url = reverse_lazy('projectprogress-list')
+
+
+# Projects TimelineView
+
+class ProjectsTimelineView(LoginRequiredMixin, TemplateView):
+    template_name = 'projects/projects_timeline.html'
+
+    def get(self, request, *args, **kwargs):
+        """Projects Timeline View with cascading filters"""
+
+        # Get all data
+        projects = Project.objects.all()
+        perspectives = Perspective.objects.all()
+        objectives = StrategicObjective.objects.all()
+        initiatives = StrategicInitiative.objects.all()
+
+        # Get filter values from GET parameters
+        perspective_id = request.GET.get('perspective')
+        objective_id = request.GET.get('objective')
+        initiative_id = request.GET.get('initiative')
+
+        # Filter initiatives and objectives first
+        if perspective_id:
+            objectives = objectives.filter(perspective_id=perspective_id)
+            initiatives = initiatives.filter(strategic_objective__perspective_id=perspective_id)
+
+        if objective_id:
+            initiatives = initiatives.filter(strategic_objective_id=objective_id)
+        
+        # Filter projects based on the related strategic initiative
+        if perspective_id:
+            projects = projects.filter(strategic_initiative__strategic_objective__perspective_id=perspective_id)
+        
+        if objective_id:
+            projects = projects.filter(strategic_initiative__strategic_objective_id=objective_id)
+        
+        if initiative_id:
+            projects = projects.filter(strategic_initiative_id=initiative_id)
+
+        # Calculate stats
+        stats = {
+            'total': projects.count(),
+            'completed': projects.filter(status__icontains='completed').count(),
+            'in_progress': projects.filter(status__icontains='in_progress').count(),
+            'incoming': projects.filter(status__icontains='incoming').count(),
+            'delayed': projects.filter(status__icontains='delayed').count(),
+            'outgoing': projects.filter(status__icontains='outgoing').count(),
+        }
+
+        context = {
+            'projects': projects,
+            'perspectives': perspectives,
+            'objectives': objectives,
+            'initiatives': initiatives,
+            'stats': stats,
+        }
+
+        return render(request, 'projects/projects_timeline.html', context)
+
 
 # AuditLog ListView (Read-only for security)
 class AuditLogListView(LoginRequiredMixin, ListView):

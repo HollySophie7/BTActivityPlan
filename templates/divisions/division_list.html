@@ -30,7 +30,7 @@
 
 <div class="card dashboard-card">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
+        <h6 class="m-0 font-weight text-primary">
             <i class="bi bi-building me-2"></i>{% if type == 'division' %} All Divisions{% elif type == 'beneficiary' %}All Beneficiary Divisions{% endif %}
             <span class="badge bg-secondary ms-2">{{ divisions|length }}</span>
         </h6>
@@ -53,11 +53,11 @@
                     <tr>
                         <td>
                             {% if type == 'division' %}
-                            <a href="{% url 'division-detail' division.pk %}" class="text-decoration-none fw-bold">
+                            <a href="{% url 'division-detail' division.pk %}" class="text-decoration-none fw">
                                 {{ division.get_name_display }}
                             </a>
                             {% elif type == 'beneficiary' %}
-                            <a href="{% url 'beneficiarydiv-detail' division.pk %}" class="text-decoration-none fw-bold">
+                            <a href="{% url 'beneficiarydiv-detail' division.pk %}" class="text-decoration-none fw">
                                 {{ division.get_name_display }}
                             </a>
                             {% endif %}

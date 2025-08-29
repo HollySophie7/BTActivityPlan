@@ -20,7 +20,7 @@
 
 <div class="card dashboard-card">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
+        <h6 class="m-0 font-weight text-primary">
             <i class="bi bi-calendar4-range me-2"></i>All Perspectives
         </h6>
     </div>
@@ -40,7 +40,7 @@
                     {% for perspective in perspectives %}
                     <tr>
                         <td>
-                            <a href="{% url 'perspective-detail' perspective.pk %}" class="text-decoration-none fw-bold">
+                            <a href="{% url 'perspective-detail' perspective.pk %}" class="text-decoration-none fw">
                                 {{ perspective.name }}
                             </a>
                         </td>

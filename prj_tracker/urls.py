@@ -11,6 +11,9 @@ urlpatterns = [
     path('projects/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
     path('projects/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete'),
     
+    # Projects Timeline URL
+    path('projects/timeline/', ProjectsTimelineView.as_view(), name='projects-timeline'),
+    
     # UserProfile URLs
     path('team/', UserProfileListView.as_view(), name='userprofile-list'),
     path('team/<int:pk>/', UserProfileDetailView.as_view(), name='userprofile-detail'),

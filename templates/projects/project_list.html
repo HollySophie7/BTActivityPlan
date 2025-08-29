@@ -75,12 +75,12 @@
                                      style="width: 12px; height: 12px; border-radius: 50%; 
                                             background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'brown' %}#795548{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
                                 <div>
-                                    <div class="fw-bold">
+                                    <div class="fw">
                                         <a href="{% url 'project-detail' project.pk %}" class="text-decoration-none">
                                             {{ project.project_name }}
                                         </a>
                                     </div>
-                                    <div class="text-muted small">{{ project.beneficiary_division|default:"No division" }}</div>
+                                    <div class="text-muted small">{{ project.beneficiary_division_section.name|default:"No division" }}</div>
                                 </div>
                             </div>
                         </td>
