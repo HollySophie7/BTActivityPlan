@@ -12,21 +12,20 @@
 {% block content %}
 <!-- Quick Stats Cards -->
 <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
             <div class="card-body px-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small fw-medium mb-1">Financial</div>
-                        <div class="h4 mb-1 fw-bold text-dark">{{ total_projects|default:"15,352" }}</div>
+                        <div class="text-muted small fw-bold mb-1">Incoming</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ incoming_count|default:"0" }}</div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
-                            <span class="text-success small fw-medium">3.02%</span>
-                            <span class="text-muted small ms-1">From last month</span>
+                            <span class="text-muted small ms-1">From this month</span>
                         </div>
                     </div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                         style="width: 48px; height: 48px; background-color: #e3f2fd;">
+                        style="width: 48px; height: 48px; background-color: #e3f2fd;">
                         <i class="bi bi-hand-index text-primary" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
@@ -34,21 +33,20 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small fw-medium mb-1">Sales</div>
-                        <div class="h4 mb-1 fw-bold text-dark">{{ active_projects|default:"8,764" }}</div>
+                        <div class="text-muted small fw-bold mb-1">In Progress</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ in_progress_count|default:"0" }}</div>
                         <div class="d-flex align-items-center">
-                            <i class="bi bi-arrow-down text-danger me-1" style="font-size: 0.75rem;"></i>
-                            <span class="text-danger small fw-medium">1.15%</span>
-                            <span class="text-muted small ms-1">From last month</span>
+                            <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-muted small ms-1">From this month</span>
                         </div>
                     </div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                         style="width: 48px; height: 48px; background-color: #e8f5e8;">
+                        style="width: 48px; height: 48px; background-color: #e8f5e8;">
                         <i class="bi bi-bag text-success" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
@@ -56,21 +54,20 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small fw-medium mb-1">Events</div>
-                        <div class="h4 mb-1 fw-bold text-dark">{{ completed_projects|default:"5,123" }}</div>
+                        <div class="text-muted small fw-bold mb-1">Outgoing</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ outgoing_count|default:"0" }}</div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
-                            <span class="text-success small fw-medium">4.78%</span>
-                            <span class="text-muted small ms-1">From last month</span>
+                            <span class="text-muted small ms-1">From this month</span>
                         </div>
                     </div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                         style="width: 48px; height: 48px; background-color: #fff3e0;">
+                        style="width: 48px; height: 48px; background-color: #fff3e0;">
                         <i class="bi bi-calendar-event text-warning" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
@@ -78,22 +75,42 @@
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small fw-medium mb-1">Users</div>
-                        <div class="h4 mb-1 fw-bold text-dark">{{ overdue_projects|default:"12,945" }}</div>
+                        <div class="text-muted small fw-bold mb-1">Completed</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ completed_count|default:"0" }}</div>
                         <div class="d-flex align-items-center">
                             <i class="bi bi-arrow-up text-success me-1" style="font-size: 0.75rem;"></i>
-                            <span class="text-success small fw-medium">2.35%</span>
-                            <span class="text-muted small ms-1">From last month</span>
+                            <span class="text-muted small ms-1">From this month</span>
                         </div>
                     </div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                         style="width: 48px; height: 48px; background-color: #f3e5f5;">
-                        <i class="bi bi-people text-info" style="font-size: 1.25rem;"></i>
+                        style="width: 48px; height: 48px; background-color: #e8f5e8;">
+                        <i class="bi bi-check-circle text-success" style="font-size: 1.25rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-md-3">
+        <div class="card dashboard-card h-100 border-0">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small fw-bold mb-1">Delayed</div>
+                        <div class="h4 mb-1 fw-bold text-dark">{{ delayed_count|default:"0" }}</div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-down text-danger me-1" style="font-size: 0.75rem;"></i>
+                            <span class="text-muted small ms-1">From this month</span>
+                        </div>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                        style="width: 48px; height: 48px; background-color: #ffebee;">
+                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
             </div>
@@ -127,7 +144,7 @@
 <div class="card dashboard-card">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Recent Projects</h6>
-        <a href="#" class="btn btn-sm btn-primary">View All</a>
+        <a href="{% url 'project-list' %}" class="btn btn-sm btn-primary">View All</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -138,17 +155,22 @@
                         <th style="width: 25%;">Strategic Objective</th>
                         <th style="width: 25%;">Strategic Initiative</th>
                         <th style="width: 15%;">Project</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 10%;">Progress</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for project in recent_projects %}
+                    {% for project in recent_projects|slice:":2" %}
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="me-2" style="width: 8px; height: 8px; border-radius: 50%; background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
                                 <div>
-                                    <div class="fw">{{ project.strategic_initiative.strategic_objective.perspective }}</div>
-                                    <div class="text-muted small">{{ initiative.perspective_name }}</div>
+                                    {% if project.strategic_initiative.strategic_objective.perspective %}
+                                        <div class="fw-medium">{{ project.strategic_initiative.strategic_objective.perspective }}</div>
+                                    {% else %}
+                                        <div class="fw-medium text-muted">No Perspective</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>
@@ -156,8 +178,8 @@
                             <div class="d-flex align-items-center">
                                 <div class="me-2" style="width: 8px; height: 8px; border-radius: 50%; background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
                                 <div>
-                                    <div class="fw">{{ project.strategic_initiative.strategic_objective }}</div>
-                                    <div class="text-muted small">{{ project.beneficiary_division }}</div>
+                                    <div class="fw-medium">{{ project.strategic_initiative.strategic_objective|truncatechars:30 }}</div>
+                                    <div class="text-muted small">{{ project.beneficiary_division|truncatechars:25 }}</div>
                                 </div>
                             </div>
                         </td>
@@ -165,8 +187,8 @@
                             <div class="d-flex align-items-center">
                                 <div class="me-2" style="width: 8px; height: 8px; border-radius: 50%; background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
                                 <div>
-                                    <div class="fw">{{ project.strategic_initiative }}</div>
-                                    <div class="text-muted small">{{ project.beneficiary_division }}</div>
+                                    <div class="fw-medium">{{ project.strategic_initiative|truncatechars:30 }}</div>
+                                    <div class="text-muted small">{{ project.created_at|date:"M d, Y" }}</div>
                                 </div>
                             </div>
                         </td>
@@ -174,14 +196,40 @@
                             <div class="d-flex align-items-center">
                                 <div class="me-2" style="width: 8px; height: 8px; border-radius: 50%; background-color: {% if project.color_status == 'green' %}#198754{% elif project.color_status == 'amber' %}#ffc107{% elif project.color_status == 'red' %}#dc3545{% else %}#6c757d{% endif %};"></div>
                                 <div>
-                                    <div class="fw">{{ project.project_name }}</div>
-                                    <div class="text-muted small">{{ project.beneficiary_division }}</div>
+                                    <div class="fw-medium">{{ project.project_name|truncatechars:25 }}</div>
+                                    <div class="text-muted small">{{ project.responsible_person|truncatechars:20 }}</div>
                                 </div>
                             </div>
                         </td>
+                        <td>
+                            <span class="badge 
+                                {% if project.status == 'completed' %}bg-success
+                                {% elif project.status == 'in progress' %}bg-primary
+                                {% elif project.status == 'incoming' %}bg-info
+                                {% elif project.status == 'outgoing' %}bg-warning
+                                {% elif project.status == 'delayed' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ project.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="progress me-2" style="height: 6px; width: 50px;">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: {{ project.progress }}%" 
+                                         aria-valuenow="{{ project.progress }}" 
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small class="text-muted">{{ project.progress }}%</small>
+                            </div>
+                        </td>
+                    </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="text-center text-muted">No projects found</td>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-folder-x h3 text-muted"></i>
+                            <p class="mb-0">No recent projects found</p>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -201,7 +249,7 @@ const topPagesChart = new Chart(ctx, {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
-                label: 'Ongoing Projects',
+                label: 'Outgoing Projects',
                 data: [32, 65, 45, 68, 49, 60, 40, 43, 78, 52, 62, 65],
                 backgroundColor: '#3b82f6',
                 borderRadius: 4,
@@ -283,6 +331,147 @@ const topPagesChart = new Chart(ctx, {
         }
     }
 });
+
+// Top Pages Chart (matching the image design)
+{% comment %} document.addEventListener('DOMContentLoaded', function() {
+    fetch('projects/statistics/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Chart data received:', data); 
+            
+            const ctx = document.getElementById('topPagesChart');
+            if (!ctx) {
+                console.error('Canvas element "topPagesChart" not found!');
+                return;
+            }
+
+            const chartContext = ctx.getContext('2d');
+            const topPagesChart = new Chart(chartContext, {
+                type: 'bar',
+                data: {
+                    labels: data.months || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Outgoing Projects',
+                            data: data.outgoing_monthly || [],
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 4,
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.8
+                        },
+                        {
+                            label: 'Completed Projects',
+                            data: data.completed_monthly || [],
+                            backgroundColor: '#10b981',
+                            borderRadius: 4,
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.8
+                        },
+                        {
+                            label: 'Average Progress',
+                            type: 'line',
+                            data: data.average_progress_monthly || [],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#f59e0b',
+                            pointRadius: 4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: `Project Statistics - ${data.current_year || new Date().getFullYear()}`
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                },
+                                color: '#64748b'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11
+                                },
+                                color: '#64748b'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Number of Projects'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Average Progress (%)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching chart data:', error);
+            const ctx = document.getElementById('topPagesChart');
+            if (ctx) {
+                const parent = ctx.parentElement;
+                parent.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-exclamation-triangle text-warning h1"></i>
+                        <p class="text-muted">Unable to load chart data</p>
+                    </div>
+                `;
+            }
+        });
+}); {% endcomment %}
 
 // Add some modern styling and animations
 Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";

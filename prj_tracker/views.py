@@ -1,7 +1,10 @@
+import calendar
+from django.http import JsonResponse
 from django.shortcuts import render
-from django.db.models import Count, Q
+from django.db.models import Avg, Count, Q
 from django.utils import timezone
 from datetime import datetime, timedelta
+from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -18,6 +21,37 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Get counts for each status
+        status_counts = Project.objects.values('status').annotate(count=Count('status'))
+        
+        # Initialize counts dictionary with default values
+        counts = {
+            'incoming_count': 0,
+            'in_progress_count': 0,
+            'outgoing_count': 0,
+            'completed_count': 0,
+            'delayed_count': 0,
+        }
+        
+        # Update counts based on database results
+        for item in status_counts:
+            status = item['status']
+            count = item['count']
+            
+            if status == 'incoming':
+                counts['incoming_count'] = count
+            elif status == 'in_progress':
+                counts['in_progress_count'] = count
+            elif status == 'outgoing':
+                counts['outgoing_count'] = count
+            elif status == 'completed':
+                counts['completed_count'] = count
+            elif status == 'delayed':
+                counts['delayed_count'] = count
+        
+        # Calculate total projects
+        total_count = sum(counts.values())
+        counts['total_count'] = total_count
         
         # Basic project statistics
         total_projects = Project.objects.count()
@@ -173,6 +207,63 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Project deleted successfully!')
         return super().delete(request, *args, **kwargs)
+    
+class ProjectStatisticsView(LoginRequiredMixin, View):
+    """API view to get project statistics for charts"""
+    
+    def get(self, request):
+        current_year = datetime.now().year
+        
+        # Initialize monthly data
+        months = [calendar.month_abbr[i] for i in range(1, 13)]
+        outgoing_monthly = []
+        completed_monthly = []
+        average_progress_monthly = []
+        
+        for month in range(1, 13):
+            # Count outgoing projects for this month
+            outgoing_count = Project.objects.filter(
+                status='outgoing',
+                created_at__year=current_year,
+                # created_at__month=month
+            ).count()
+            outgoing_monthly.append(outgoing_count)
+            
+            # Count completed projects for this month
+            completed_count = Project.objects.filter(
+                status='completed',
+                created_at__year=current_year,
+                # created_at__month=month
+            ).count()
+            completed_monthly.append(completed_count)
+            
+            # Average progress for this month
+            month_projects = Project.objects.filter(
+                created_at__year=current_year,
+                # created_at__month=month
+            )
+            if month_projects.exists():
+                avg_progress = month_projects.aggregate(
+                    avg=Avg('progress')
+                )['avg'] or 0
+                average_progress_monthly.append(round(avg_progress, 1))
+            else:
+                average_progress_monthly.append(0)
+        
+        return JsonResponse({
+            'months': months,
+            'outgoing_monthly': outgoing_monthly,
+            'completed_monthly': completed_monthly,
+            'average_progress_monthly': average_progress_monthly,
+            'total_projects': Project.objects.count(),
+            'current_year': current_year,
+            # Status counts for dashboard cards
+            'incoming_count': Project.objects.filter(status='incoming').count(),
+            'in_progress_count': Project.objects.filter(status='in_progress').count(),
+            'outgoing_count': Project.objects.filter(status='outgoing').count(),
+            'completed_count': Project.objects.filter(status='completed').count(),
+            'delayed_count': Project.objects.filter(status='delayed').count(),
+        })    
 
 # UserProfile CRUD Views
 class UserProfileListView(LoginRequiredMixin, ListView):

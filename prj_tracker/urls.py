@@ -13,6 +13,9 @@ urlpatterns = [
     
     # Projects Timeline URL
     path('projects/timeline/', ProjectsTimelineView.as_view(), name='projects-timeline'),
+
+    # Projects Statics URL
+    path('projects/statistics/', ProjectStatisticsView.as_view(), name='projects-statistics'),
     
     # UserProfile URLs
     path('team/', UserProfileListView.as_view(), name='userprofile-list'),
