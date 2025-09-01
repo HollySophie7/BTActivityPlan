@@ -39,35 +39,43 @@
                         </div>
 
                         <!-- Strategic Objective -->
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-3 mb-3 position-relative">
                             <label for="objective" class="form-label">Strategic Objective</label>
                             <select class="form-select" name="objective" id="objective">
                                 <option value="">All Objectives</option>
                                 {% for objective in objectives %}
                                     <option value="{{ objective.id }}"
+                                        data-perspective="{{ objective.perspective.id }}"
                                         {% if request.GET.objective == objective.id|stringformat:"s" %}selected{% endif %}>
-                                        {{ objective.strategic_objective_name }} ({{ objective.perspective.name }})
+                                        {{ objective.strategic_objective_name }}
                                     </option>
                                 {% endfor %}
                             </select>
+                            <div id="objective-loading" class="spinner-border spinner-border-sm text-primary position-absolute d-none" 
+                                style="right: 2.5rem; top: 2.2rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
                         </div>
 
                         <!-- Strategic Initiative -->
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-3 mb-3 position-relative">
                             <label for="initiative" class="form-label">Strategic Initiative</label>
                             <select class="form-select" name="initiative" id="initiative">
                                 <option value="">All Initiatives</option>
                                 {% for initiative in initiatives %}
                                     <option value="{{ initiative.id }}"
+                                        data-objective="{{ initiative.strategic_objective.id }}"
                                         {% if request.GET.initiative == initiative.id|stringformat:"s" %}selected{% endif %}>
-                                        {{ initiative.strategic_initiative_name }} 
-                                        ({{ initiative.strategic_objective.perspective.name }})
+                                        {{ initiative.strategic_initiative_name }}
                                     </option>
                                 {% endfor %}
                             </select>
+                            <div id="initiative-loading" class="spinner-border spinner-border-sm text-primary position-absolute d-none"
+                                style="right: 2.5rem; top: 2.2rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
                         </div>
 
-                        
                         <div class="col-md-3 mb-3 d-flex align-items-end gap-2">
                             <button type="submit" class="btn btn-primary flex-grow-1">
                                 <i class="bi bi-search me-2"></i>Apply Filter
@@ -88,14 +96,14 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h6 class="mb-3">Status Key:</h6>
+                <h6 class="mb-3" style="font-size: 15px">Status Key:</h6>
                 <div class="d-flex flex-wrap gap-3">
                     <div class="legend-item">
                         <span class="legend-color status-completed"></span>
                         <span>On Schedule</span>
                     </div>
                     <div class="legend-item">
-                        <span class="legend-color status-in-progress"></span>
+                        <span class="legend-color status-in_progress"></span>
                         <span>Partly on Schedule</span>
                     </div>
                     <div class="legend-item">
@@ -200,11 +208,221 @@
     </div>
 </div>
 
+<script>
+    // Pass Django URLs to JavaScript
+    const AJAX_URLS = {
+        objectives: "{% url 'get-objectives-ajax' %}",
+        initiatives: "{% url 'get-initiatives-ajax' %}"
+    };
+    
+    // Get CSRF token for AJAX requests
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const perspectiveSelect = document.getElementById('perspective');
+    const objectiveSelect = document.getElementById('objective');
+    const initiativeSelect = document.getElementById('initiative');
+    const objectiveLoading = document.getElementById('objective-loading');
+    const initiativeLoading = document.getElementById('initiative-loading');
+
+    // Store original options for fallback
+    const originalObjectives = Array.from(objectiveSelect.options);
+    const originalInitiatives = Array.from(initiativeSelect.options);
+
+    function toggleLoading(element, show) {
+        element.classList.toggle('d-none', !show);
+    }
+
+    function populateSelect(selectElement, options, valueField = 'id', textField = 'name') {
+        // Keep the first option (All...)
+        const firstOption = selectElement.options[0].cloneNode(true);
+        selectElement.innerHTML = '';
+        selectElement.appendChild(firstOption);
+        
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option[valueField];
+            optionElement.textContent = option[textField];
+            selectElement.appendChild(optionElement);
+        });
+
+        // Trigger change event to update dependent dropdowns
+        selectElement.dispatchEvent(new Event('change'));
+    }
+
+    function makeAjaxRequest(url, params = {}) {
+        const urlParams = new URLSearchParams(params);
+        const fullUrl = `${url}?${urlParams.toString()}`;
+        
+        return fetch(fullUrl, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        });
+    }
+
+    // Handle perspective change
+    perspectiveSelect.addEventListener('change', function() {
+        const perspectiveId = this.value;
+        
+        // Reset dependent dropdowns
+        objectiveSelect.innerHTML = '<option value="">All Objectives</option>';
+        initiativeSelect.innerHTML = '<option value="">All Initiatives</option>';
+        
+        if (perspectiveId) {
+            toggleLoading(objectiveLoading, true);
+            
+            makeAjaxRequest(AJAX_URLS.objectives, { perspective_id: perspectiveId })
+                .then(data => {
+                    if (data.success && data.objectives) {
+                        populateSelect(
+                            objectiveSelect, 
+                            data.objectives, 
+                            'id', 
+                            'strategic_objective_name'
+                        );
+                    } else {
+                        console.error('Invalid response structure:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching objectives:', error);
+                    // Show user-friendly error message
+                    const errorOption = document.createElement('option');
+                    errorOption.value = '';
+                    errorOption.textContent = 'Error loading objectives';
+                    errorOption.disabled = true;
+                    objectiveSelect.appendChild(errorOption);
+                })
+                .finally(() => {
+                    toggleLoading(objectiveLoading, false);
+                });
+        }
+    });
+
+    // Handle objective change
+    objectiveSelect.addEventListener('change', function() {
+        const objectiveId = this.value;
+        
+        // Reset dependent dropdown
+        initiativeSelect.innerHTML = '<option value="">All Initiatives</option>';
+        
+        if (objectiveId) {
+            toggleLoading(initiativeLoading, true);
+            
+            makeAjaxRequest(AJAX_URLS.initiatives, { objective_id: objectiveId })
+                .then(data => {
+                    if (data.success && data.initiatives) {
+                        populateSelect(
+                            initiativeSelect, 
+                            data.initiatives, 
+                            'id', 
+                            'strategic_initiative_name'
+                        );
+                    } else {
+                        console.error('Invalid response structure:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching initiatives:', error);
+                    // Show user-friendly error message
+                    const errorOption = document.createElement('option');
+                    errorOption.value = '';
+                    errorOption.textContent = 'Error loading initiatives';
+                    errorOption.disabled = true;
+                    initiativeSelect.appendChild(errorOption);
+                })
+                .finally(() => {
+                    toggleLoading(initiativeLoading, false);
+                });
+        }
+    });
+
+    // Handle form reset
+    document.querySelector('a[href*="projects-timeline"]').addEventListener('click', function(e) {
+        // Only prevent default if it's a reset action
+        const currentUrl = new URL(window.location.href);
+        const targetUrl = new URL(this.href, window.location.origin);
+        
+        if (currentUrl.pathname === targetUrl.pathname && currentUrl.search !== '') {
+            e.preventDefault();
+            // Reset form and redirect
+            perspectiveSelect.selectedIndex = 0;
+            objectiveSelect.innerHTML = originalObjectives[0].outerHTML;
+            initiativeSelect.innerHTML = originalInitiatives[0].outerHTML;
+            window.location.href = targetUrl.href;
+        }
+    });
+
+    // Auto-submit form on selection change (optional)
+    // Uncomment these lines if you want the form to submit automatically
+    /*
+    initiativeSelect.addEventListener('change', function() {
+        if (this.value) {
+            document.getElementById('filterForm').submit();
+        }
+    });
+    */
+});
+</script>
 
 {% endblock %}
 
 {% block extra_js %}
 <style>
+
+.card-header h5 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.form-select:disabled {
+    background-color: #f8f9fa;
+    opacity: 0.65;
+}
+
+/* Loading state styles */
+.loading .form-select {
+    background-image: none;
+    padding-right: 3.5rem;
+}
+
 .stat-number {
     font-size: 1.5rem;
     font-weight: 700;
@@ -311,7 +529,7 @@
     background-color: #28a745;
 }
 
-.status-in-progress, .legend-color.status-Partly-on-Schedule {
+.status-in_progress, .legend-color.status-Partly-on-Schedule {
     background-color: #ffc107;
 }
 
@@ -323,6 +541,9 @@
     background-color: #dc3545;
 }
 
+.status-outgoing, .legend-color.status-outgoing {
+    background-color: #35b5dcff;
+}
 
 /* Legend */
 .legend-item {

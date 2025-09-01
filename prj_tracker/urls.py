@@ -14,6 +14,10 @@ urlpatterns = [
     # Projects Timeline URL
     path('projects/timeline/', ProjectsTimelineView.as_view(), name='projects-timeline'),
 
+    path('ajax/get-objectives/', GetObjectivesAjaxView.as_view(), name='get-objectives-ajax'),
+    path('ajax/get-initiatives/', GetInitiativesAjaxView.as_view(), name='get-initiatives-ajax'),
+
+
     # Projects Statics URL
     path('projects/statistics/', ProjectStatisticsView.as_view(), name='projects-statistics'),
     

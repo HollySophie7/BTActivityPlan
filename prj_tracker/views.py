@@ -16,6 +16,11 @@ from .models import (
 
 from .forms import *
 from .utils import AuditMixin
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
@@ -655,3 +660,145 @@ class AuditLogListView(LoginRequiredMixin, ListView):
     context_object_name = 'logs'
     paginate_by = 50
     ordering = ['-timestamp']
+
+
+
+# @login_required
+# @require_http_methods(["GET"])
+# def get_objectives_ajax(request):
+#     """
+#     AJAX endpoint to get strategic objectives by perspective
+#     """
+#     perspective_id = request.GET.get('perspective_id')
+    
+#     if not perspective_id:
+#         return JsonResponse({'objectives': []})
+    
+#     try:
+#         from .models import StrategicObjective
+        
+#         objectives = StrategicObjective.objects.filter(
+#             perspective_id=perspective_id
+#         ).select_related('perspective').values(
+#             'id', 
+#             'strategic_objective_name',
+#             'perspective_id'
+#         )
+        
+#         objectives_list = list(objectives)
+        
+#         return JsonResponse({
+#             'objectives': objectives_list,
+#             'success': True
+#         })
+        
+#     except Exception as e:
+#         return JsonResponse({
+#             'objectives': [],
+#             'success': False,
+#             'error': str(e)
+#         }, status=500)
+
+
+# @login_required
+# @require_http_methods(["GET"])
+# def get_initiatives_ajax(request):
+#     """
+#     AJAX endpoint to get strategic initiatives by objective
+#     """
+#     objective_id = request.GET.get('objective_id')
+    
+#     if not objective_id:
+#         return JsonResponse({'initiatives': []})
+    
+#     try:
+#         from .models import StrategicInitiative 
+#         initiatives = StrategicInitiative.objects.filter(
+#             strategic_objective_id=objective_id
+#         ).select_related('strategic_objective').values(
+#             'id', 
+#             'strategic_initiative_name',
+#             'strategic_objective_id'
+#         )
+        
+#         initiatives_list = list(initiatives)
+        
+#         return JsonResponse({
+#             'initiatives': initiatives_list,
+#             'success': True
+#         })
+        
+#     except Exception as e:
+#         return JsonResponse({
+#             'initiatives': [],
+#             'success': False,
+#             'error': str(e)
+#         }, status=500)
+
+
+# Alternative Class-Based Views (if you prefer CBVs)
+from django.views.generic import View
+from django.utils.decorators import method_decorator
+
+@method_decorator([login_required, csrf_exempt], name='dispatch')
+class GetObjectivesAjaxView(View):
+    def get(self, request):
+        perspective_id = request.GET.get('perspective_id')
+        
+        if not perspective_id:
+            return JsonResponse({'objectives': []})
+        
+        try:
+            from .models import StrategicObjective
+            
+            objectives = StrategicObjective.objects.filter(
+                perspective_id=perspective_id
+            ).select_related('perspective').values(
+                'id', 
+                'strategic_objective_name',
+                'perspective_id'
+            )
+            
+            return JsonResponse({
+                'objectives': list(objectives),
+                'success': True
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'objectives': [],
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+
+@method_decorator([login_required, csrf_exempt], name='dispatch')
+class GetInitiativesAjaxView(View):
+    def get(self, request):
+        objective_id = request.GET.get('objective_id')
+        
+        if not objective_id:
+            return JsonResponse({'initiatives': []})
+        
+        try:
+            from .models import StrategicInitiative
+            
+            initiatives = StrategicInitiative.objects.filter(
+                strategic_objective_id=objective_id
+            ).select_related('strategic_objective').values(
+                'id', 
+                'strategic_initiative_name',
+                'strategic_objective_id'
+            )
+            
+            return JsonResponse({
+                'initiatives': list(initiatives),
+                'success': True
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'initiatives': [],
+                'success': False,
+                'error': str(e)
+            }, status=500)

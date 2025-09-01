@@ -11,10 +11,11 @@
 
 {% block content %}
 <!-- Quick Stats Cards -->
+<!-- Updated Dashboard Status Cards with Filtered Links -->
 <div class="row g-3 mb-4">
-    <div class="col-xl-2 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
-            <div class="card-body px-4">
+           <a class="text-decoration-none" href="{% url 'project-list' %}?status=incoming"> <div class="card-body px-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small fw-bold mb-1">Incoming</div>
@@ -29,13 +30,13 @@
                         <i class="bi bi-hand-index text-primary" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
-            </div>
+            </div> </a>
         </div>
     </div>
 
-    <div class="col-xl-2 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
-            <div class="card-body p-4">
+            <a class="text-decoration-none" href="{% url 'project-list' %}?status=in_progress"><div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small fw-bold mb-1">In Progress</div>
@@ -50,13 +51,13 @@
                         <i class="bi bi-bag text-success" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
-            </div>
+            </div> </a>
         </div>
     </div>
 
-    <div class="col-xl-2 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
-            <div class="card-body p-4">
+            <a class="text-decoration-none" href="{% url 'project-list' %}?status=outgoing"><div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small fw-bold mb-1">Outgoing</div>
@@ -71,13 +72,13 @@
                         <i class="bi bi-calendar-event text-warning" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
-            </div>
+            </div> </a>
         </div>
     </div>
 
-    <div class="col-xl-2 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
-            <div class="card-body p-4">
+           <a class="text-decoration-none" href="{% url 'project-list' %}?status=completed"> <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small fw-bold mb-1">Completed</div>
@@ -92,13 +93,13 @@
                         <i class="bi bi-check-circle text-success" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
-            </div>
+            </div> </a>
         </div>
     </div>
 
-    <div class="col-xl-2 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card dashboard-card h-100 border-0">
-            <div class="card-body p-4">
+           <a class="text-decoration-none" href="{% url 'project-list' %}?status=delayed"> <div class="card-body p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <div class="text-muted small fw-bold mb-1">Delayed</div>
@@ -113,7 +114,7 @@
                         <i class="bi bi-exclamation-triangle text-danger" style="font-size: 1.25rem;"></i>
                     </div>
                 </div>
-            </div>
+            </div> </a>
         </div>
     </div>
 </div>
