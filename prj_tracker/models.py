@@ -138,6 +138,7 @@ class Project(models.Model):
     end_date = models.DateField(null=True, blank=True)
     progress = models.DecimalField(decimal_places=2, max_digits=4, default=0.00, blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='incoming')
+    priority_rate = models.CharField(max_length=20, blank=True, null=True)
     strategic_initiative = models.ForeignKey('StrategicInitiative', on_delete=models.SET_NULL, null=True, blank=True)
     quarterly_status = models.JSONField(default=dict, blank=True)  # Q1, Q2, Q3, Q4 status
     monthly_progress = models.JSONField(default=dict, blank=True)

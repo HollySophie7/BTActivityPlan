@@ -242,7 +242,7 @@
 {% block extra_js %}
 <script>
 // Top Pages Chart (matching the image design)
-const ctx = document.getElementById('topPagesChart').getContext('2d');
+{% comment %} const ctx = document.getElementById('topPagesChart').getContext('2d');
 const topPagesChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -330,10 +330,10 @@ const topPagesChart = new Chart(ctx, {
             }
         }
     }
-});
+}); {% endcomment %}
 
 // Top Pages Chart (matching the image design)
-{% comment %} document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     fetch('projects/statistics/')
         .then(response => {
             if (!response.ok) {
@@ -471,7 +471,7 @@ const topPagesChart = new Chart(ctx, {
                 `;
             }
         });
-}); {% endcomment %}
+}); 
 
 // Add some modern styling and animations
 Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";

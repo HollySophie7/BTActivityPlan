@@ -92,23 +92,19 @@
                 <div class="d-flex flex-wrap gap-3">
                     <div class="legend-item">
                         <span class="legend-color status-completed"></span>
-                        <span>Completed</span>
+                        <span>On Schedule</span>
                     </div>
                     <div class="legend-item">
-                        <span class="legend-color status-in_progress"></span>
-                        <span>In Progress</span>
+                        <span class="legend-color status-in-progress"></span>
+                        <span>Partly on Schedule</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color status-incoming"></span>
-                        <span>Incoming</span>
+                        <span>Almost off Schedule</span>
                     </div>
                     <div class="legend-item">
                         <span class="legend-color status-delayed"></span>
-                        <span>Delayed</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color status-outgoing"></span>
-                        <span>Outgoing</span>
+                        <span>Out of Schedule</span>
                     </div>
                 </div>
             </div>
@@ -311,29 +307,22 @@
 }
 
 /* Status Colors */
-.status-completed, .legend-color.status-completed {
+.status-completed, .legend-color.status-On-Schedule {
     background-color: #28a745;
 }
 
-.status-in-progress, .legend-color.status-in-progress {
+.status-in-progress, .legend-color.status-Partly-on-Schedule {
     background-color: #ffc107;
 }
 
-.status-incoming, .legend-color.status-incoming {
-    background-color: #007bff;
+.status-incoming, .legend-color.status-Almost-off-Schedule {
+    background-color: brown;
 }
 
-.status-delayed, .legend-color.status-delayed {
+.status-delayed, .legend-color.status-Out-of-Schedule {
     background-color: #dc3545;
 }
 
-.status-outgoing, .legend-color.status-outgoing {
-    background-color: #6c757d;
-}
-
-.status-not-started, .legend-color.status-not-started {
-    background-color: #e9ecef;
-}
 
 /* Legend */
 .legend-item {

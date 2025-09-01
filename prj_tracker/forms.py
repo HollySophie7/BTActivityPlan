@@ -66,13 +66,14 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = [
-            "project_name", "developer", "system_analyst", "start_date", "end_date", "status", "strategic_initiative", "beneficiary_division_section"
+            "project_name", "developer", "system_analyst", "start_date", "end_date", "status", "priority_rate", "strategic_initiative", "beneficiary_division_section"
         ]
 
         widgets = {
             'developer': forms.Select(attrs={'class': 'form-control'}),
             'system_analyst': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
+            'priority_rate': forms.Select(attrs={'class': 'form-control'}),
             'strategic_initiative': forms.Select(attrs={'class': 'form-control'}),
             'beneficiary_division_section': forms.Select(attrs={'class': 'form-control'}),
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),

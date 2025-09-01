@@ -15,13 +15,15 @@ from .models import (
 )
 
 from .forms import *
+from .utils import AuditMixin
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get counts for each status
+        
+        # Get counts for each status - FIXED VERSION
         status_counts = Project.objects.values('status').annotate(count=Count('status'))
         
         # Initialize counts dictionary with default values
@@ -40,7 +42,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             
             if status == 'incoming':
                 counts['incoming_count'] = count
-            elif status == 'in_progress':
+            elif status == 'in_progress':  # Fixed: was 'in progress' with space
                 counts['in_progress_count'] = count
             elif status == 'outgoing':
                 counts['outgoing_count'] = count
@@ -55,22 +57,22 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         
         # Basic project statistics
         total_projects = Project.objects.count()
-        active_projects = Project.objects.filter(status__in=['incoming', 'in progress']).count()
+        active_projects = Project.objects.filter(status__in=['incoming', 'in_progress']).count()  # Fixed status name
         completed_projects = Project.objects.filter(status='completed').count()
         
         # Calculate overdue projects (past end_date and not completed)
         today = timezone.now().date()
         overdue_projects = Project.objects.filter(
             end_date__lt=today,
-            status__in=['incoming', 'in progress', 'delayed']
+            status__in=['incoming', 'in_progress', 'delayed']  # Fixed status name
         ).count()
         
-        # Project status color distribution
-        green_projects = Project.objects.filter().count()
-        amber_projects = Project.objects.filter().count()
-        brown_projects = Project.objects.filter().count()
-        red_projects = Project.objects.filter().count()
-        not_started_projects = Project.objects.filter().count()
+        # Project status color distribution - ADD PROPER FILTERS
+        green_projects = Project.objects.filter(status='completed').count()
+        amber_projects = Project.objects.filter(status='in_progress').count()
+        brown_projects = Project.objects.filter(status='delayed').count()
+        red_projects = Project.objects.filter(status='outgoing').count()
+        not_started_projects = Project.objects.filter(status='incoming').count()
         
         # Team workload statistics
         total_team = UserProfile.objects.count()
@@ -94,7 +96,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         upcoming_deadlines = Project.objects.filter(
             end_date__gte=today,
             end_date__lte=upcoming_deadline_date,
-            status__in=['incoming', 'in progress']
+            status__in=['incoming', 'in_progress']  # Fixed status name
         ).order_by('end_date')[:5]
         
         # Add days remaining for each deadline
@@ -119,6 +121,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             else:
                 objective.completion_percentage = 0
                 objective.projects_count = 0
+
+        # IMPORTANT: Add the counts to context
+        context.update(counts)  # This adds all the count variables
         
         context.update({
             'total_projects': total_projects,
@@ -145,7 +150,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         })
         
         return context
-
+    
 # Project CRUD Views
 class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
@@ -225,7 +230,7 @@ class ProjectStatisticsView(LoginRequiredMixin, View):
             outgoing_count = Project.objects.filter(
                 status='outgoing',
                 created_at__year=current_year,
-                # created_at__month=month
+                created_at__month=month
             ).count()
             outgoing_monthly.append(outgoing_count)
             
@@ -233,14 +238,14 @@ class ProjectStatisticsView(LoginRequiredMixin, View):
             completed_count = Project.objects.filter(
                 status='completed',
                 created_at__year=current_year,
-                # created_at__month=month
+                created_at__month=month
             ).count()
             completed_monthly.append(completed_count)
             
             # Average progress for this month
             month_projects = Project.objects.filter(
                 created_at__year=current_year,
-                # created_at__month=month
+                created_at__month=month
             )
             if month_projects.exists():
                 avg_progress = month_projects.aggregate(
@@ -257,12 +262,6 @@ class ProjectStatisticsView(LoginRequiredMixin, View):
             'average_progress_monthly': average_progress_monthly,
             'total_projects': Project.objects.count(),
             'current_year': current_year,
-            # Status counts for dashboard cards
-            'incoming_count': Project.objects.filter(status='incoming').count(),
-            'in_progress_count': Project.objects.filter(status='in_progress').count(),
-            'outgoing_count': Project.objects.filter(status='outgoing').count(),
-            'completed_count': Project.objects.filter(status='completed').count(),
-            'delayed_count': Project.objects.filter(status='delayed').count(),
         })    
 
 # UserProfile CRUD Views
@@ -335,7 +334,6 @@ class DivisionDeleteView(LoginRequiredMixin, DeleteView):
 
 
 #Beneficially Division
-
 class BeneficiaryDivisionListView(LoginRequiredMixin, ListView):
     model = BeneficiaryDivisionSection
     template_name = 'divisions/division_list.html'
@@ -391,8 +389,6 @@ class BeneficiaryDivisionDeleteView(LoginRequiredMixin, DeleteView):
         context['type'] = 'beneficiary'
         return context
 
-
-
 # YearlyPlan CRUD Views
 class YearlyPlanListView(LoginRequiredMixin, ListView):
     model = YearlyPlan
@@ -423,9 +419,7 @@ class YearlyPlanDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('yearlyplan-list')
 
 
-
 #Perspectives Views 
-
 class PerspectiveListView(LoginRequiredMixin, ListView):
     model = Perspective
     template_name = 'perspectives/perspective_list.html'
@@ -453,9 +447,6 @@ class PerspectiveDeleteView(LoginRequiredMixin, DeleteView):
     model = Perspective
     template_name = 'perspectives/perspective_confirm_delete.html'
     success_url = reverse_lazy('perspective-list')
-
-
-
 
 
 # StrategicObjective CRUD Views
@@ -528,26 +519,73 @@ class ProjectProgressDetailView(LoginRequiredMixin, DetailView):
     template_name = 'projectprogress/projectprogress_detail.html'
     context_object_name = 'progress'
 
-class ProjectProgressCreateView(LoginRequiredMixin, CreateView):
+class ProjectProgressCreateView(LoginRequiredMixin, CreateView, AuditMixin):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_form.html'
     form_class = ProjectProgressForm
     success_url = reverse_lazy('projectprogress-list')
 
-class ProjectProgressUpdateView(LoginRequiredMixin, UpdateView):
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        
+        # Create audit log
+        details = []
+        if hasattr(self.object, 'project'):
+            details.append(f"Project: {self.object.project}")
+        if hasattr(self.object, 'progress_percentage'):
+            details.append(f"Progress: {self.object.progress_percentage}%")
+        
+        changes = f"Created project progress: {'; '.join(details) if details else 'New progress entry'}"
+        self.create_audit_log('CREATE', changes)
+        
+        return response
+
+class ProjectProgressUpdateView(LoginRequiredMixin, UpdateView, AuditMixin):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_form.html'
     form_class = ProjectProgressForm
     success_url = reverse_lazy('projectprogress-list')
 
-class ProjectProgressDeleteView(LoginRequiredMixin, DeleteView):
+    def form_valid(self, form):
+        # Store the original object for comparison
+        original_obj = ProjectProgress.objects.get(pk=self.object.pk)
+        
+        # Save the form first
+        response = super().form_valid(form)
+        
+        # Create audit log for the update
+        fields_to_track = ['progress_percentage', 'status', 'description', 'milestone']
+        changes = self.get_field_changes(original_obj, form.instance, fields_to_track)
+        
+        self.create_audit_log('UPDATE', f"Updated project progress: {changes}")
+        
+        return response
+
+class ProjectProgressDeleteView(LoginRequiredMixin, DeleteView, AuditMixin):
     model = ProjectProgress
     template_name = 'projectprogress/projectprogress_confirm_delete.html'
     success_url = reverse_lazy('projectprogress-list')
 
+    def delete(self, request, *args, **kwargs):
+        # Store object info before deletion
+        obj = self.get_object()
+        self.object = obj  # Set for the mixin
+        
+        # Create audit log before deletion
+        object_info = f"Progress ID: {obj.pk}"
+        if hasattr(obj, 'project'):
+            object_info += f", Project: {obj.project}"
+        if hasattr(obj, 'progress_percentage'):
+            object_info += f", Progress: {obj.progress_percentage}%"
+        
+        self.create_audit_log('DELETE', f"Deleted project progress: {object_info}")
+        
+        # Proceed with deletion
+        return super().delete(request, *args, **kwargs)
+
+
 
 # Projects TimelineView
-
 class ProjectsTimelineView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/projects_timeline.html'
 
