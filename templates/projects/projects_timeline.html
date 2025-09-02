@@ -160,10 +160,62 @@
                                     <div class="project-name-cell">
                                         <div class="project-name">{{ project.name }}</div>
                                         <div class="project-details">
-                                            <small class="text-muted">
+                                            <a type="button" href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#ProjectDetailsModal-{{ project.id }}">
+                                                <small class="text-muted">
                                                 {{ project.project_name|default:"N/A" }} 
-                                            </small>
+                                                </small>
+                                            </a>
                                         </div>
+                                    </div>
+
+                                    <!-- Project Details Modal -->
+                                    <div class="modal fade" id="ProjectDetailsModal-{{ project.id }}" tabindex="-1" aria-labelledby="ProjectDetailsModal-{{ project.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ProjectDetailsModal-{{ project.id }}">Project Details - {{ project.project_name }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Project Name</th>
+                                                                <td>{{ project.project_name|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Developer</th>
+                                                                <td>{{ project.developer|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">System Analyst</th>
+                                                                <td>{{ project.system_analyst|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Status</th>
+                                                                <td>{{ project.status|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Start Date</th>
+                                                                <td>{{ project.start_date|date:"M d, Y"|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">End Date</th>
+                                                                <td>{{ project.end_date|date:"M d, Y"|default:"N/A" }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Beneficiary Division/Section</th>
+                                                                <td>{{ project.beneficiary_division_section.name|default:"N/A" }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>   
                                     </div>
                                     
                                     <!-- Month cells -->
@@ -205,7 +257,7 @@
                 {% endif %}
             </div>
         </div>
-    </div>
+    </div>     
 </div>
 
 <script>
@@ -542,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .status-outgoing, .legend-color.status-outgoing {
-    background-color: #35b5dcff;
+    background-color: #f0d71dff;
 }
 
 /* Legend */

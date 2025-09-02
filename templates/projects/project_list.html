@@ -89,6 +89,7 @@
                                 {% if project.status == 'completed' %}bg-success
                                 {% elif project.status == 'in_progress' %}bg-primary
                                 {% elif project.status == 'incoming' %}bg-info
+                                {% elif project.status == 'outgoing' %}bg-warning
                                 {% elif project.status == 'delayed' %}bg-danger
                                 {% else %}bg-secondary{% endif %}">
                                 {{ project.get_status_display }}
