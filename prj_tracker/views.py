@@ -47,7 +47,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             
             if status == 'incoming':
                 counts['incoming_count'] = count
-            elif status == 'in_progress':  # Fixed: was 'in progress' with space
+            elif status == 'in_progress':  
                 counts['in_progress_count'] = count
             elif status == 'outgoing':
                 counts['outgoing_count'] = count
@@ -226,11 +226,28 @@ class ProjectStatisticsView(LoginRequiredMixin, View):
         
         # Initialize monthly data
         months = [calendar.month_abbr[i] for i in range(1, 13)]
+        incoming_monthly = []
+        in_progress_monthly = []
         outgoing_monthly = []
-        completed_monthly = []
-        average_progress_monthly = []
+        # average_progress_monthly = []
         
         for month in range(1, 13):
+            # Count incoming projects for this month
+            incoming_count = Project.objects.filter(
+                status='incoming',
+                created_at__year=current_year,
+                created_at__month=month
+            ).count()
+            incoming_monthly.append(incoming_count)
+
+            # Count in_progress projects for this month
+            in_progress_count = Project.objects.filter(
+                status='in_progress',
+                created_at__year=current_year,
+                created_at__month=month
+            ).count()
+            in_progress_monthly.append(in_progress_count)
+            
             # Count outgoing projects for this month
             outgoing_count = Project.objects.filter(
                 status='outgoing',
@@ -239,32 +256,25 @@ class ProjectStatisticsView(LoginRequiredMixin, View):
             ).count()
             outgoing_monthly.append(outgoing_count)
             
-            # Count completed projects for this month
-            completed_count = Project.objects.filter(
-                status='completed',
-                created_at__year=current_year,
-                created_at__month=month
-            ).count()
-            completed_monthly.append(completed_count)
-            
             # Average progress for this month
-            month_projects = Project.objects.filter(
-                created_at__year=current_year,
-                created_at__month=month
-            )
-            if month_projects.exists():
-                avg_progress = month_projects.aggregate(
-                    avg=Avg('progress')
-                )['avg'] or 0
-                average_progress_monthly.append(round(avg_progress, 1))
-            else:
-                average_progress_monthly.append(0)
+            # month_projects = Project.objects.filter(
+            #     created_at__year=current_year,
+            #     created_at__month=month
+            # )
+            # if month_projects.exists():
+            #     avg_progress = month_projects.aggregate(
+            #         avg=Avg('progress')
+            #     )['avg'] or 0
+            #     average_progress_monthly.append(round(avg_progress, 1))
+            # else:
+            #     average_progress_monthly.append(0)
         
         return JsonResponse({
             'months': months,
+            'incoming_monthly': incoming_monthly,
+            'in_progress_monthly': in_progress_monthly,
             'outgoing_monthly': outgoing_monthly,
-            'completed_monthly': completed_monthly,
-            'average_progress_monthly': average_progress_monthly,
+            # 'average_progress_monthly': average_progress_monthly,
             'total_projects': Project.objects.count(),
             'current_year': current_year,
         })    

@@ -358,22 +358,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     labels: data.months || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [
                         {
-                            label: 'Outgoing Projects',
-                            data: data.outgoing_monthly || [],
+                            label: 'Starting',
+                            data: data.incoming_monthly || [],
                             backgroundColor: '#3b82f6',
-                            borderRadius: 4,
+                            borderRadius: 2,
                             barPercentage: 0.7,
                             categoryPercentage: 0.8
                         },
                         {
-                            label: 'Completed Projects',
-                            data: data.completed_monthly || [],
+                            label: 'Ongoing',
+                            data: data.in_progress_monthly || [],
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 2,
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.8
+                        },
+                        {
+                            label: 'Closing',
+                            data: data.outgoing_monthly || [],
                             backgroundColor: '#10b981',
-                            borderRadius: 4,
+                            borderRadius: 2,
                             barPercentage: 0.7,
                             categoryPercentage: 0.8
                         },
-                        {
+                        {% comment %} {
                             label: 'Average Progress',
                             type: 'line',
                             data: data.average_progress_monthly || [],
@@ -383,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             pointBackgroundColor: '#f59e0b',
                             pointRadius: 4,
                             yAxisID: 'y1'
-                        }
+                        } {% endcomment %}
                     ]
                 },
                 options: {

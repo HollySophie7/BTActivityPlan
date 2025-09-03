@@ -184,16 +184,16 @@
                                                                 <td>{{ project.project_name|default:"N/A" }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Developer</th>
-                                                                <td>{{ project.developer|default:"N/A" }}</td>
+                                                                <th scope="row">Perspective</th>
+                                                                <td>{{ project.strategic_initiative.perspective.name|default:"N/A" }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">System Analyst</th>
-                                                                <td>{{ project.system_analyst|default:"N/A" }}</td>
+                                                                <th scope="row">Strategic Objective</th>
+                                                                <td>{{ project.strategic_initiative.strategic_objective.strategic_objective_name|default:"N/A" }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th scope="row">Status</th>
-                                                                <td>{{ project.status|default:"N/A" }}</td>
+                                                                <th scope="row">Strategic Initiative</th>
+                                                                <td>{{ project.strategic_initiative.strategic_initiative_name|default:"N/A" }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Start Date</th>
@@ -202,6 +202,16 @@
                                                             <tr>
                                                                 <th scope="row">End Date</th>
                                                                 <td>{{ project.end_date|date:"M d, Y"|default:"N/A" }}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th scope="row">Status</th>
+                                                                <td>{{ project.status|default:"N/A" }}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th scope="row">Priority Rate</th>
+                                                                <td>{{ project.priority_rate|default:"N/A" }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Beneficiary Division/Section</th>
