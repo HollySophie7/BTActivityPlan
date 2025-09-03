@@ -7,7 +7,7 @@ class YearlyPlanForm(ModelForm):
         model = YearlyPlan
         fields = ['name', 'description', 'weightage', 'division']
         widgets = {
-            'division': forms.Select(attrs={'class': 'form-control'})
+            'division': forms.Select(attrs={'class': 'form-select'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -15,7 +15,7 @@ class YearlyPlanForm(ModelForm):
         self.fields['division'].queryset = Division.objects.all()
 
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class DivisionForm(ModelForm):
     class Meta:
@@ -26,7 +26,7 @@ class DivisionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DivisionForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class PerspectiveForm(ModelForm):
     class Meta:
@@ -36,7 +36,7 @@ class PerspectiveForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PerspectiveForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class StrategicObjectiveForm(ModelForm):
     class Meta:
@@ -46,7 +46,7 @@ class StrategicObjectiveForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(StrategicObjectiveForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class StrategicInitiativeForm(ModelForm):
     class Meta:
@@ -60,7 +60,7 @@ class StrategicInitiativeForm(ModelForm):
         self.fields['strategic_objective'].queryset = StrategicObjective.objects.all()
 
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class ProjectForm(ModelForm):
     class Meta:
@@ -70,14 +70,14 @@ class ProjectForm(ModelForm):
         ]
 
         widgets = {
-            'developer': forms.Select(attrs={'class': 'form-control'}),
-            'system_analyst': forms.Select(attrs={'class': 'form-control'}),
-            'status': forms.Select(attrs={'class': 'form-control'}),
-            'priority_rate': forms.Select(attrs={'class': 'form-control'}),
-            'strategic_initiative': forms.Select(attrs={'class': 'form-control'}),
-            'beneficiary_division_section': forms.Select(attrs={'class': 'form-control'}),
+            'developer': forms.Select(attrs={'class': 'form-select'}),
+            'system_analyst': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'priority_rate': forms.Select(attrs={'class': 'form-select'}),
+            'strategic_initiative': forms.Select(attrs={'class': 'form-select'}),
+            'beneficiary_division_section': forms.Select(attrs={'class': 'form-select'}),
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+            'end_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -93,7 +93,7 @@ class BeneficiaryDivisionSectionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(BeneficiaryDivisionSectionForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class UserProfileForm(ModelForm):
     class Meta:
@@ -103,7 +103,7 @@ class UserProfileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-control"
+            field.widget.attrs["class"] = field.widget.attrs.get("class", "") + " form-select"
 
 class ProjectProgressForm(ModelForm):
     class Meta:

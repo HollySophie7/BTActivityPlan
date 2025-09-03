@@ -204,14 +204,40 @@
                                                                 <td>{{ project.end_date|date:"M d, Y"|default:"N/A" }}</td>
                                                             </tr>
 
-                                                            <tr>
-                                                                <th scope="row">Status</th>
-                                                                <td>{{ project.status|default:"N/A" }}</td>
+                                                             <tr>
+                                                                    <th scope="row">Status</th>
+                                                                    <td>
+                                                                        <span class="badge 
+                                                                            {% if project.status == 'completed' %}bg-success
+                                                                            {% elif project.status == 'in_progress' %}bg-primary
+                                                                            {% elif project.status == 'incoming' %}bg-info
+                                                                            {% elif project.status == 'outgoing' %}bg-warning
+                                                                            {% elif project.status == 'delayed' %}bg-danger
+                                                                            {% else %}bg-secondary{% endif %}">
+                                                                            {{ project.get_status_display }}
+                                                                        </span>
+                                                                    </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <th scope="row">Priority Rate</th>
-                                                                <td>{{ project.priority_rate|default:"N/A" }}</td>
+                                                                <td>
+                                                                    {% if project.priority_rate %}
+                                                                        <span class="badge 
+                                                                            {% if project.priority_rate == 'high' %}bg-danger
+                                                                            {% elif project.priority_rate == 'medium' %}bg-warning
+                                                                            {% elif project.priority_rate == 'low' %}bg-success
+                                                                            {% else %}bg-secondary{% endif %}">
+                                                                            {% if project.priority_rate == 'high' %}High
+                                                                            {% elif project.priority_rate == 'medium' %}Medium
+                                                                            {% elif project.priority_rate == 'low' %}Low
+                                                                            {% else %}{{ project.priority_rate|title }}
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span class="text-muted">N/A</span>
+                                                                    {% endif %}
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">Beneficiary Division/Section</th>

@@ -81,7 +81,7 @@
                     <div class="col-sm-9">
                         <span class="badge 
                             {% if project.status == 'completed' %}bg-success
-                            {% elif project.status == 'in progress' %}bg-primary
+                            {% elif project.status == 'in_progress' %}bg-primary
                             {% elif project.status == 'incoming' %}bg-info
                             {% elif project.status == 'delayed' %}bg-danger
                             {% else %}bg-secondary{% endif %}">
@@ -92,7 +92,23 @@
 
                 <div class="row mb-3">
                     <div class="col-sm-3"><strong>Priority Rate:</strong></div>
-                    <div class="col-sm-9">{{ project.priority_rate|default:"Not specified" }}</div>
+                    <div class="col-sm-9">
+                        {% if project.priority_rate %}
+                            <span class="badge 
+                                {% if project.priority_rate == 'high' %}bg-danger
+                                {% elif project.priority_rate == 'medium' %}bg-warning
+                                {% elif project.priority_rate == 'low' %}bg-success
+                                {% else %}bg-secondary{% endif %}">
+                                {% if project.priority_rate == 'high' %}High
+                                {% elif project.priority_rate == 'medium' %}Medium
+                                {% elif project.priority_rate == 'low' %}Low
+                                {% else %}{{ project.priority_rate|title }}
+                                {% endif %}
+                            </span>
+                        {% else %}
+                            <span class="text-muted">Not specified</span>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="row mb-3">
