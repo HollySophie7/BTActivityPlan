@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Strategic Initiative Details{% endblock %}
+{% block page_title %}Strategic Initiative Details{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'strategicinitiative-list' %}">Strategic Initiatives</a></li>
+<li class="breadcrumb-item active">{{ initiative.strategic_initiative_name|truncatechars:30 }}</li>
+{% endblock %}
+
 {% block content %}
 <div class="card dashboard-card">
     <div class="card-header py-3 d-flex justify-content-between">

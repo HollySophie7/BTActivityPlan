@@ -485,7 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 {% block extra_js %}
 <style>
-
 .card-header h5 {
     font-size: 15px;
     font-weight: 600;
@@ -520,6 +519,11 @@ document.addEventListener('DOMContentLoaded', function() {
     font-size: 0.8rem;
     color: #666;
     font-weight: 500;
+}
+
+/* Add spacing between legend and calendar */
+.row:has(.calendar-container) {
+    margin-top: 2rem;
 }
 
 .calendar-container {
@@ -601,7 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .project-bar {
     width: 100%;
     height: 24px;
-    border-radius: 6px;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -612,25 +616,42 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Status Colors */
-.status-completed, .legend-color.status-On-Schedule {
-    background-color: #28a745;
+/* Calendar Cell Status Colors (Different from legend) */
+.status-completed {
+    background-color: #28a745; /* Green */
 }
 
-.status-in_progress, .legend-color.status-Partly-on-Schedule {
-    background-color: #ffc107;
+.status-in_progress, .status-in-progress {
+    background-color: #007bff; /* Blue */
 }
 
-.status-incoming, .legend-color.status-Almost-off-Schedule {
-    background-color: brown;
+.status-incoming {
+    background-color: #fd7e14; /* Orange */
 }
 
-.status-delayed, .legend-color.status-Out-of-Schedule {
-    background-color: #dc3545;
+.status-delayed {
+    background-color: #dc3545; /* Red */
 }
 
-.status-outgoing, .legend-color.status-outgoing {
-    background-color: #f0d71dff;
+.status-outgoing {
+    background-color: #ffc107; /* Amber */
+}
+
+/* Legend Colors (Only 4 statuses) */
+.legend-color.status-completed {
+    background-color: #28a745; /* Green - On Schedule */
+}
+
+.legend-color.status-in_progress {
+    background-color: #ffc107; /* Yellow - Partly on Schedule */
+}
+
+.legend-color.status-incoming {
+    background-color: #fd7e14; /* Orange - Almost off Schedule */
+}
+
+.legend-color.status-delayed {
+    background-color: #dc3545; /* Red - Out of Schedule */
 }
 
 /* Legend */

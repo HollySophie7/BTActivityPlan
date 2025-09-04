@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ perspective.name }} - Project Tracker{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'perspective-list' %}">Perspectives</a></li>
+<li class="breadcrumb-item active">{{ perspective.name }}</li>
+{% endblock %}
 
 {% block content %}
 <div class="card dashboard-card">

@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Progress Entry Details{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'projectprogress-list' %}">Progress Entries</a></li>
+<li class="breadcrumb-item active">Progress Entry Details</li>
+{% endblock %}
+
 {% block content %}
 <div class="card dashboard-card">
     <div class="card-header py-3 d-flex justify-content-between">
@@ -18,9 +24,19 @@
             <div class="col-sm-3"><strong>Month:</strong></div>
             <div class="col-sm-9">{{ progress.month }} {{ progress.year }}</div>
         </div>
-        <div class="row mb-3">
-            <div class="col-sm-3"><strong>Status:</strong></div>
-            <div class="col-sm-9"><span class="badge bg-secondary">{{ progress.get_status_display }}</span></div>
+       <div class="row mb-3">
+        <div class="col-sm-3"><strong>Status:</strong></div>
+        <div class="col-sm-9">
+            <span class="badge 
+                        {% if progress.status == 'completed' %}bg-success
+                        {% elif progress.status == 'in_progress' %}bg-primary
+                        {% elif progress.status == 'incoming' %}bg-info
+                        {% elif progress.status == 'outgoing' %}bg-warning
+                        {% elif progress.status == 'delayed' %}bg-danger
+                        {% else %}bg-secondary{% endif %}">
+                {{ progress.get_status_display }}
+            </span>
+        </div>
         </div>
         <div class="row mb-3">
             <div class="col-sm-3"><strong>Notes:</strong></div>

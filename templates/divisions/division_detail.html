@@ -3,14 +3,14 @@
 {% block title %}{{ division.get_name_display }} - Project Tracker{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="bi bi-house-door"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
 {% if type == 'division' %}
 <li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
 {% elif type == 'beneficiary' %}
 <li class="breadcrumb-item"><a href="{% url 'beneficiarydiv' %}">Beneficiary Divisions</a></li>
 {% endif %}
 
-<li class="breadcrumb-item active">{{ division.get_name_display }}</li>
+<li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
 {% endblock %}
 
 {% block page_title %}{{ division.get_name_display }}{% endblock %}

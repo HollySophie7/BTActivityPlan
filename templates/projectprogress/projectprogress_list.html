@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Project Progress{% endblock %}
 {% block page_title %}Project Progress Tracking{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active">Project Progress</li>
+{% endblock %}
 {% block content %}
 <div class="mb-4">
     <a href="{% url 'projectprogress-create' %}" class="btn btn-primary">

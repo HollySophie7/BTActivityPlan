@@ -3,7 +3,7 @@
 {% block title %}Divisions - Project Tracker{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="bi bi-house-door"></i></a></li>
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
 {% if type == 'division' %}
 <li class="breadcrumb-item"><a href="{% url 'division-list' %}">Divisions</a></li>
 {% elif type == 'beneficiary' %}

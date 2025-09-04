@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}{{ objective.strategic_objective|truncatechars:30 }}{% endblock %}
 {% block page_title %}Strategic Objective Details{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'strategicobjective-list' %}">Strategic Objective</a></li>
+<li class="breadcrumb-item active">{{ strategicobjective.name }}</li>
+{% endblock %}
+
 {% block content %}
 <div class="card dashboard-card">
     <div class="card-header py-3 d-flex justify-content-between">

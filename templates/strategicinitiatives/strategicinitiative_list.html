@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Strategic Initiatives{% endblock %}
 {% block page_title %}Strategic Initiatives{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+<li class="breadcrumb-item active">Strategic Initiatives</li>
+{% endblock %}
 {% block content %}
 <div class="mb-4">
     <a href="{% url 'strategicinitiative-create' %}" class="btn btn-primary">

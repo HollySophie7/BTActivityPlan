@@ -387,7 +387,7 @@ body {
 }
 
 .breadcrumb-custom .breadcrumb-item a {
-    color: #6b7280;
+    color: #ffffff;
     text-decoration: none;
     transition: all 0.2s;
     padding: 0.25rem 0.5rem;
@@ -401,14 +401,14 @@ body {
 }
 
 .breadcrumb-custom .breadcrumb-item.active {
-    color: #111827;
+    color: #ffffff;
     font-weight: 600;
 }
 
 /* Page Title */
 .page-title {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
     color: #f1f5f9;
     margin: 0;
     line-height: 1.2;
