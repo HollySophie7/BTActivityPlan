@@ -7,11 +7,13 @@ from django.dispatch import receiver
 class UserProfile(models.Model):
     ROLES = (
         (1, 'Project Admin'),
-        (2, 'Project Officer'),
-        (3, 'System Admin'),
-        (4, 'Project Manager'),
-        (5, 'Developer'),
+        (2, 'Chief Manager'),
+        (3, 'Manager'),
+        (4, 'Developer'),
+        (5, 'Business Analyst'),
         (6, 'System Analyst'),
+        (7, 'QA'),
+        (8, 'DevOps'),
     )
     
     AVAILABILITY_STATUS_CHOICES = [
